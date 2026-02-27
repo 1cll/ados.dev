@@ -22,18 +22,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0a0a1a;
-      --bg-card: #111127;
+      --bg: #06060f;
+      --bg-card: rgba(17,17,39,0.7);
+      --bg-card-solid: #111127;
       --text: #e2e8f0;
       --text-muted: #94a3b8;
       --accent: #7c3aed;
       --accent-light: #a78bfa;
+      --accent-glow: rgba(124,58,237,0.4);
       --green: #22c55e;
       --blue: #3b82f6;
+      --cyan: #06b6d4;
       --border: rgba(255,255,255,0.08);
+      --border-glow: rgba(124,58,237,0.3);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
@@ -41,33 +47,103 @@
       color: var(--text);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
+
+    /* ── Animations ── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px var(--accent-glow), 0 0 60px rgba(124,58,237,0.1); }
+      50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(124,58,237,0.2); }
+    }
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes typing-cursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* ── Scroll Reveal ── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
 
     /* ── Nav ── */
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      backdrop-filter: blur(20px);
-      background: rgba(10,10,26,0.8);
+      backdrop-filter: blur(24px) saturate(180%);
+      background: rgba(6,6,15,0.75);
       border-bottom: 1px solid var(--border);
       padding: 0 2rem;
+      transition: all 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(6,6,15,0.92);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
     }
     .nav-inner {
       max-width: 1200px; margin: 0 auto;
       display: flex; align-items: center; justify-content: space-between;
       height: 64px;
     }
-    .nav-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+    .nav-logo {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em;
+      color: var(--text); text-decoration: none;
+      display: flex; align-items: center; gap: 0.25rem;
+    }
     .nav-logo span { color: var(--accent-light); }
     .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s; position: relative;
+    }
     .nav-links a:hover { color: var(--text); }
+    .nav-links a:not(.nav-cta)::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: var(--accent); border-radius: 1px;
+      transition: width 0.3s;
+    }
+    .nav-links a:not(.nav-cta):hover::after { width: 100%; }
     .nav-cta {
-      background: var(--accent); color: #fff !important;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: #fff !important;
       padding: 0.5rem 1.25rem; border-radius: 8px;
       font-weight: 600; font-size: 0.9rem;
-      text-decoration: none; transition: all 0.2s;
+      text-decoration: none; transition: all 0.3s;
+      position: relative; overflow: hidden;
     }
-    .nav-cta:hover { background: #6d28d9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(124,58,237,0.3); }
+    .nav-cta::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: none;
+    }
+    .nav-cta:hover::after { animation: shimmer 0.6s ease-out; }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
     .nav-hamburger {
       display: none; background: none; border: none; cursor: pointer;
       width: 32px; height: 32px; position: relative;
@@ -82,404 +158,636 @@
 
     /* ── Hero ── */
     .hero {
-      padding: 10rem 2rem 6rem;
+      padding: 10rem 2rem 4rem;
       text-align: center;
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
     }
-    .hero::before {
-      content: '';
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
-      pointer-events: none;
+    .hero-grid {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.07) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 100%);
     }
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none;
+      animation: float 8s ease-in-out infinite;
+    }
+    .hero-orb-1 {
+      width: 500px; height: 500px;
+      background: rgba(124,58,237,0.15);
+      top: -100px; left: 50%; transform: translateX(-50%);
+    }
+    .hero-orb-2 {
+      width: 300px; height: 300px;
+      background: rgba(6,182,212,0.1);
+      bottom: 10%; right: -50px;
+      animation-delay: -3s;
+    }
+    .hero-orb-3 {
+      width: 250px; height: 250px;
+      background: rgba(34,197,94,0.08);
+      bottom: 20%; left: -30px;
+      animation-delay: -5s;
+    }
+    .hero-content { position: relative; z-index: 1; }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
-      border-radius: 50px; padding: 0.35rem 1rem;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.25);
+      border-radius: 50px; padding: 0.4rem 1.25rem;
       font-size: 0.8rem; color: var(--accent-light); font-weight: 600;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fade-up 0.8s ease-out;
+      backdrop-filter: blur(10px);
+    }
+    .hero-badge .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px rgba(34,197,94,0.6);
+      animation: pulse-glow 2s ease-in-out infinite;
     }
     .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 900; letter-spacing: -0.03em;
-      line-height: 1.1; margin-bottom: 1.25rem;
-      background: linear-gradient(135deg, #fff 30%, var(--accent-light));
+      font-size: clamp(2.75rem, 7vw, 5rem);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.08; margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, #fff 40%, var(--accent-light) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
+      animation: fade-up 0.8s ease-out 0.1s both;
     }
     .hero p {
-      font-size: 1.2rem; color: var(--text-muted);
-      max-width: 640px; margin: 0 auto 2.5rem;
-      line-height: 1.7;
+      font-size: 1.25rem; color: var(--text-muted);
+      max-width: 640px; margin: 0 auto 3rem;
+      line-height: 1.8;
+      animation: fade-up 0.8s ease-out 0.2s both;
     }
     .hero-actions {
       display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fade-up 0.8s ease-out 0.3s both;
     }
     .btn-primary {
       background: linear-gradient(135deg, var(--accent), #6d28d9);
-      color: #fff; padding: 0.85rem 2rem; border-radius: 10px;
+      background-size: 200% 200%;
+      animation: gradient-shift 3s ease-in-out infinite;
+      color: #fff; padding: 0.9rem 2.25rem; border-radius: 12px;
       font-weight: 700; font-size: 1.05rem; text-decoration: none;
-      transition: all 0.2s; border: none; cursor: pointer;
-      display: inline-block;
+      transition: all 0.3s; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      position: relative; overflow: hidden;
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+    .btn-primary::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--accent-glow); }
+    .btn-primary:hover::after { animation: shimmer 0.6s ease-out; }
     .btn-secondary {
-      background: transparent; color: var(--text);
-      padding: 0.85rem 2rem; border-radius: 10px;
+      background: rgba(255,255,255,0.04); color: var(--text);
+      padding: 0.9rem 2.25rem; border-radius: 12px;
       font-weight: 600; font-size: 1.05rem; text-decoration: none;
-      border: 1px solid var(--border); transition: all 0.2s;
-      display: inline-block;
+      border: 1px solid var(--border); transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      backdrop-filter: blur(10px);
     }
-    .btn-secondary:hover { border-color: var(--accent-light); color: var(--accent-light); }
+    .btn-secondary:hover {
+      border-color: var(--accent-light); color: var(--accent-light);
+      background: rgba(124,58,237,0.08);
+    }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center;
+      margin-top: 4rem;
+      animation: fade-up 0.8s ease-out 0.5s both;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-value {
+      font-size: 1.75rem; font-weight: 900; color: var(--accent-light);
+    }
+    .hero-stat-label {
+      font-size: 0.8rem; color: var(--text-muted); font-weight: 500;
+      margin-top: 0.25rem;
+    }
 
     /* ── Demo ── */
     .demo {
-      max-width: 900px; margin: 0 auto 6rem; padding: 0 2rem;
+      max-width: 900px; margin: 0 auto; padding: 0 2rem 6rem;
+      position: relative;
     }
     .demo-window {
       background: #0d1117; border: 1px solid #30363d;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      border-radius: 16px; overflow: hidden;
+      box-shadow:
+        0 25px 50px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(124,58,237,0.1),
+        0 0 80px rgba(124,58,237,0.05);
+      transition: all 0.5s;
+    }
+    .demo-window:hover {
+      box-shadow:
+        0 30px 60px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(124,58,237,0.3),
+        0 0 120px rgba(124,58,237,0.1);
+      transform: translateY(-4px);
     }
     .demo-titlebar {
       background: #161b22; padding: 0.75rem 1rem;
       display: flex; align-items: center; gap: 0.5rem;
       border-bottom: 1px solid #30363d;
     }
+    .demo-titlebar-title {
+      flex: 1; text-align: center; font-size: 0.75rem;
+      color: #8b949e; font-weight: 500;
+    }
     .demo-dot { width: 12px; height: 12px; border-radius: 50%; }
     .demo-dot:nth-child(1) { background: #ff5f57; }
     .demo-dot:nth-child(2) { background: #febc2e; }
     .demo-dot:nth-child(3) { background: #28c840; }
     .demo-code {
-      padding: 1.5rem; font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.85rem; line-height: 1.8; overflow-x: auto;
+      padding: 1.75rem; font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+      font-size: 0.85rem; line-height: 1.9; overflow-x: auto;
+      min-height: 320px;
     }
     .demo-code .comment { color: #8b949e; }
     .demo-code .keyword { color: #ff7b72; }
     .demo-code .string { color: #a5d6ff; }
     .demo-code .func { color: #d2a8ff; }
     .demo-code .label { color: #7ee787; }
-
-    /* ── How It Works ── */
-    .how-it-works {
-      max-width: 1000px; margin: 0 auto; padding: 6rem 2rem;
+    .demo-code .typing-cursor {
+      display: inline-block; width: 8px; height: 18px;
+      background: var(--accent-light);
+      animation: typing-cursor 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
     }
+
+    /* ── Section shared ── */
     .section-title {
-      text-align: center; font-size: 2.25rem; font-weight: 800;
-      margin-bottom: 1rem; letter-spacing: -0.02em;
+      text-align: center; font-size: 2.5rem; font-weight: 800;
+      margin-bottom: 1rem; letter-spacing: -0.03em;
     }
     .section-subtitle {
       text-align: center; color: var(--text-muted);
-      font-size: 1.1rem; margin-bottom: 4rem; max-width: 600px; margin-left: auto; margin-right: auto;
+      font-size: 1.1rem; margin-bottom: 4rem;
+      max-width: 640px; margin-left: auto; margin-right: auto;
+      line-height: 1.7;
     }
-    .steps {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
-    }
-    .step {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      text-align: center; transition: all 0.3s;
-    }
-    .step:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .step-num {
-      width: 48px; height: 48px; margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, var(--accent), #4f46e5);
-      border-radius: 12px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; font-weight: 800; color: #fff;
-    }
-    .step h3 { font-size: 1.15rem; margin-bottom: 0.75rem; font-weight: 700; }
-    .step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
-
-    /* ── Features ── */
-    .features {
-      max-width: 1200px; margin: 0 auto; padding: 6rem 2rem;
-    }
-    .features-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-    }
-    .feature {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 1.75rem;
-      transition: all 0.3s;
-    }
-    .feature:hover { border-color: var(--accent); }
-    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .feature p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
 
     /* ── Comparison ── */
     .comparison {
-      max-width: 1000px; margin: 0 auto; padding: 6rem 2rem;
+      max-width: 1000px; margin: 0 auto; padding: 8rem 2rem;
+      position: relative;
     }
     .comparison-table-wrap {
       overflow-x: auto; margin-top: 2rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      backdrop-filter: blur(20px);
     }
     .comparison-table {
       width: 100%; border-collapse: collapse;
       font-size: 0.9rem;
     }
     .comparison-table th, .comparison-table td {
-      padding: 0.85rem 1.25rem; text-align: left;
+      padding: 1rem 1.5rem; text-align: left;
       border-bottom: 1px solid var(--border);
     }
     .comparison-table thead th {
       font-weight: 700; font-size: 0.95rem;
-      padding-bottom: 1rem; color: var(--text-muted);
-      border-bottom: 2px solid var(--border);
+      padding: 1.25rem 1.5rem; color: var(--text-muted);
+      background: rgba(255,255,255,0.02);
     }
     .comparison-table thead th.ados-col {
       color: var(--accent-light); font-weight: 800;
     }
     .comparison-table td { color: var(--text-muted); }
     .comparison-table td:first-child { color: var(--text); font-weight: 600; }
-    .comparison-table td.ados-col {
-      color: var(--green); font-weight: 600;
-    }
-    .comparison-table tbody tr:hover {
-      background: rgba(124,58,237,0.05);
-    }
+    .comparison-table td.ados-col { color: var(--green); font-weight: 600; }
+    .comparison-table tbody tr { transition: all 0.3s; }
+    .comparison-table tbody tr:hover { background: rgba(124,58,237,0.06); }
+    .comparison-table tbody tr:last-child td { border-bottom: none; }
     .comparison-note {
       text-align: center; color: var(--text-muted);
       font-size: 0.9rem; margin-top: 2rem;
-      padding: 1.25rem; border-radius: 12px;
-      background: rgba(124,58,237,0.08);
-      border: 1px solid rgba(124,58,237,0.2);
+      padding: 1.5rem; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(6,182,212,0.05));
+      border: 1px solid rgba(124,58,237,0.15);
       line-height: 1.7;
+      backdrop-filter: blur(10px);
     }
     .comparison-note strong { color: var(--accent-light); }
 
+    /* ── How It Works ── */
+    .how-it-works {
+      max-width: 1000px; margin: 0 auto; padding: 8rem 2rem;
+    }
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+      position: relative;
+    }
+    .steps::before {
+      content: ''; position: absolute;
+      top: 50px; left: 15%; right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent), transparent);
+      opacity: 0.3;
+    }
+    .step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.25rem;
+      text-align: center; transition: all 0.4s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+    .step::before {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 20px; padding: 1px;
+      background: linear-gradient(135deg, transparent, var(--accent), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .step:hover::before { opacity: 1; }
+    .step:hover { transform: translateY(-6px); }
+    .step-num {
+      width: 56px; height: 56px; margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: #fff;
+      box-shadow: 0 4px 15px var(--accent-glow);
+    }
+    .step h3 { font-size: 1.15rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
     /* ── Closed-Loop ── */
     .closed-loop {
-      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem 8rem;
+      position: relative;
     }
-    .loop-flow {
-      display: flex; align-items: flex-start; justify-content: center;
-      flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem;
-    }
-    .loop-step {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 1.5rem 1.25rem;
-      text-align: center; width: 180px;
-      transition: all 0.3s;
-    }
-    .loop-step:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .loop-icon { font-size: 2rem; margin-bottom: 0.75rem; }
-    .loop-label { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .loop-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
-    .loop-arrow {
+    .loop-visual {
+      position: relative;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; color: var(--accent-light); font-weight: 700;
-      min-width: 32px; padding-top: 1.5rem;
+      margin-top: 3rem; min-height: 420px;
     }
-    .loop-return { color: var(--green); }
+    .loop-center {
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      font-weight: 800; font-size: 0.85rem;
+      color: #fff; text-align: center;
+      box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(124,58,237,0.15);
+      animation: pulse-glow 3s ease-in-out infinite;
+      z-index: 2; line-height: 1.3;
+    }
+    .loop-center-icon { font-size: 2rem; margin-bottom: 0.25rem; }
+    .loop-node {
+      position: absolute;
+      width: 140px; text-align: center;
+    }
+    .loop-node-icon {
+      width: 64px; height: 64px; margin: 0 auto 0.5rem;
+      background: var(--bg-card-solid);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      transition: all 0.4s;
+    }
+    .loop-node:hover .loop-node-icon {
+      border-color: var(--accent);
+      box-shadow: 0 0 30px var(--accent-glow);
+      transform: scale(1.1);
+    }
+    .loop-node-label { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .loop-node-desc { font-size: 0.7rem; color: var(--text-muted); line-height: 1.4; }
+    .loop-node-1 { top: -20px; left: 50%; transform: translateX(-50%); }
+    .loop-node-2 { top: 50%; right: -40px; transform: translateY(-50%); }
+    .loop-node-3 { bottom: -20px; left: 50%; transform: translateX(-50%); }
+    .loop-node-4 { top: 50%; left: -40px; transform: translateY(-50%); }
+    .loop-svg {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+    }
     .loop-caption {
       text-align: center; margin-top: 2rem;
       color: var(--text-muted); font-size: 0.9rem;
       font-weight: 600;
     }
+    .loop-caption em { color: var(--accent-light); font-style: normal; }
+
+    /* ── Features ── */
+    .features {
+      max-width: 1200px; margin: 0 auto; padding: 8rem 2rem;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .feature {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: all 0.4s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+    .feature::before {
+      content: ''; position: absolute; inset: 0;
+      border-radius: 20px; padding: 1px;
+      background: linear-gradient(135deg, transparent, var(--accent), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .feature:hover::before { opacity: 1; }
+    .feature:hover { transform: translateY(-4px); }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.25rem;
+    }
+    .feature h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; }
+    .feature-tag {
+      display: inline-block; margin-top: 0.75rem;
+      font-size: 0.7rem; font-weight: 700;
+      color: var(--green); background: rgba(34,197,94,0.1);
+      padding: 0.2rem 0.6rem; border-radius: 6px;
+      border: 1px solid rgba(34,197,94,0.2);
+    }
 
     /* ── Metrics ── */
     .metrics {
-      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem 8rem;
     }
     .metrics-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
       margin-top: 3rem;
     }
     .metric {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem 1.5rem; text-align: center;
-      transition: all 0.3s;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.25rem 1.5rem; text-align: center;
+      transition: all 0.4s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(20px);
     }
-    .metric:hover { border-color: var(--accent); }
+    .metric::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--cyan));
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .metric:hover::after { opacity: 1; }
+    .metric:hover { transform: translateY(-4px); border-color: var(--border-glow); }
     .metric-value {
-      font-size: 3rem; font-weight: 900;
-      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      font-size: 3.5rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-light), var(--cyan));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 1.2; margin-bottom: 0.5rem;
+      line-height: 1.1; margin-bottom: 0.5rem;
     }
-    .metric-value span { font-size: 1.5rem; }
-    .metric-label {
-      font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;
-    }
-    .metric-desc {
-      font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;
-    }
+    .metric-value span { font-size: 1.75rem; }
+    .metric-label { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .metric-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
 
     /* ── Use Cases ── */
     .usecases {
-      max-width: 1000px; margin: 0 auto; padding: 4rem 2rem 6rem;
+      max-width: 1100px; margin: 0 auto; padding: 4rem 2rem 8rem;
     }
     .usecases-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
       margin-top: 3rem;
     }
     .usecase {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
-      transition: all 0.3s;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2.25rem;
+      transition: all 0.4s;
+      position: relative; overflow: hidden;
+      backdrop-filter: blur(20px);
     }
-    .usecase:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .usecase-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
-    .usecase h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .usecase::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at top right, rgba(124,58,237,0.06), transparent 60%);
+      pointer-events: none;
+    }
+    .usecase:hover { border-color: var(--accent); transform: translateY(-6px); }
+    .usecase-emoji { font-size: 2.5rem; margin-bottom: 1.25rem; display: block; }
+    .usecase-before-after {
+      margin-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .usecase-ba-row {
+      display: flex; gap: 0.5rem; align-items: baseline;
+      font-size: 0.8rem; line-height: 1.5;
+      margin-bottom: 0.25rem;
+    }
+    .usecase-ba-tag {
+      font-size: 0.65rem; font-weight: 800;
+      padding: 0.1rem 0.4rem; border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .usecase-ba-before { background: rgba(239,68,68,0.15); color: #f87171; }
+    .usecase-ba-after { background: rgba(34,197,94,0.15); color: #4ade80; }
+    .usecase h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; }
     .usecase p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
 
-    /* ── FAQ ── */
-    .faq {
-      max-width: 800px; margin: 0 auto; padding: 6rem 2rem;
+    /* ── Agents ── */
+    .agents {
+      max-width: 1000px; margin: 0 auto; padding: 4rem 2rem 6rem;
+      text-align: center;
     }
-    .faq-list { margin-top: 2rem; }
-    .faq-item {
-      border: 1px solid var(--border);
-      border-radius: 12px; margin-bottom: 0.75rem;
-      background: var(--bg-card);
-      overflow: hidden;
+    .agents-logos {
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      margin-top: 2.5rem;
     }
-    .faq-item summary {
-      padding: 1.25rem 1.5rem;
-      font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; color: var(--text);
-      list-style: none; display: flex; align-items: center; justify-content: space-between;
-      transition: color 0.2s;
+    .agent-logo {
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+      transition: all 0.3s;
     }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after {
-      content: '+'; font-size: 1.25rem; color: var(--accent-light);
-      font-weight: 700; flex-shrink: 0; margin-left: 1rem;
-      transition: transform 0.2s;
+    .agent-logo:hover { transform: translateY(-4px); }
+    .agent-logo-icon {
+      width: 72px; height: 72px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; transition: all 0.3s;
+      backdrop-filter: blur(20px);
     }
-    .faq-item[open] summary::after { content: '−'; }
-    .faq-item[open] summary { color: var(--accent-light); }
-    .faq-item p {
-      padding: 0 1.5rem 1.25rem;
-      color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;
+    .agent-logo:hover .agent-logo-icon {
+      border-color: var(--accent);
+      box-shadow: 0 0 30px var(--accent-glow);
     }
+    .agent-logo-name { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
 
     /* ── Pricing ── */
     .pricing {
-      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+      max-width: 1100px; margin: 0 auto; padding: 8rem 2rem;
     }
     .pricing-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
     }
     .price-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem;
+      border-radius: 20px; padding: 2.25rem;
       display: flex; flex-direction: column;
-      transition: all 0.3s;
+      transition: all 0.4s;
+      backdrop-filter: blur(20px);
+      position: relative; overflow: hidden;
     }
+    .price-card:hover { transform: translateY(-4px); }
     .price-card.popular {
       border-color: var(--accent);
-      box-shadow: 0 0 30px rgba(124,58,237,0.15);
-      position: relative;
+      box-shadow: 0 0 40px rgba(124,58,237,0.12);
     }
     .price-card.popular::before {
-      content: '人気'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: var(--accent); color: #fff; padding: 4px 16px;
-      border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+      content: '人気'; position: absolute; top: 16px; right: -30px;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: #fff; padding: 4px 36px;
+      font-size: 0.7rem; font-weight: 700;
+      transform: rotate(45deg);
     }
     .price-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .price-amount {
-      font-size: 2.5rem; font-weight: 900; margin-bottom: 0.25rem;
-    }
+    .price-amount { font-size: 2.75rem; font-weight: 900; margin-bottom: 0.25rem; }
     .price-note { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
     .price-features { list-style: none; flex: 1; margin-bottom: 1.5rem; }
     .price-features li {
-      padding: 0.4rem 0; font-size: 0.875rem; color: var(--text-muted);
+      padding: 0.5rem 0; font-size: 0.875rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.5rem;
     }
-    .price-features li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+    .price-features li::before {
+      content: '✓'; color: var(--green); font-weight: 700;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: rgba(34,197,94,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; flex-shrink: 0;
+    }
     .price-cta {
       display: block; text-align: center;
-      padding: 0.75rem; border-radius: 10px;
-      font-weight: 600; font-size: 0.95rem;
-      text-decoration: none; transition: all 0.2s;
+      padding: 0.85rem; border-radius: 12px;
+      font-weight: 700; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.3s;
     }
     .price-cta-primary {
-      background: var(--accent); color: #fff;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: #fff; position: relative; overflow: hidden;
     }
-    .price-cta-primary:hover { background: #6d28d9; }
+    .price-cta-primary:hover {
+      box-shadow: 0 4px 20px var(--accent-glow);
+      transform: translateY(-1px);
+    }
     .price-cta-secondary {
-      background: rgba(255,255,255,0.05); color: var(--text);
+      background: rgba(255,255,255,0.04); color: var(--text);
       border: 1px solid var(--border);
     }
-    .price-cta-secondary:hover { border-color: var(--accent-light); }
+    .price-cta-secondary:hover { border-color: var(--accent-light); color: var(--accent-light); }
 
-    /* ── Agents ── */
-    .agents {
-      max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;
-      text-align: center;
+    /* ── FAQ ── */
+    .faq {
+      max-width: 800px; margin: 0 auto; padding: 8rem 2rem;
     }
-    .agents-logos {
-      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
-      margin-top: 2rem;
+    .faq-list { margin-top: 2rem; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 16px; margin-bottom: 0.75rem;
+      background: var(--bg-card);
+      overflow: hidden; transition: all 0.3s;
+      backdrop-filter: blur(20px);
     }
-    .agent-logo {
-      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    .faq-item:hover { border-color: rgba(124,58,237,0.2); }
+    .faq-item summary {
+      padding: 1.25rem 1.5rem;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; color: var(--text);
+      list-style: none;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: color 0.2s;
     }
-    .agent-logo-icon {
-      width: 64px; height: 64px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; display: flex; align-items: center; justify-content: center;
-      font-size: 1.75rem;
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+'; font-size: 1.5rem; color: var(--accent-light);
+      font-weight: 300; flex-shrink: 0; margin-left: 1rem;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; background: rgba(124,58,237,0.1);
+      transition: all 0.3s;
     }
-    .agent-logo-name { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+    .faq-item[open] summary::after {
+      content: '−'; transform: rotate(180deg);
+      background: rgba(124,58,237,0.2);
+    }
+    .faq-item[open] summary { color: var(--accent-light); }
+    .faq-item p {
+      padding: 0 1.5rem 1.25rem;
+      color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;
+    }
 
     /* ── CTA ── */
     .cta-section {
-      text-align: center; padding: 6rem 2rem;
-      position: relative;
+      text-align: center; padding: 8rem 2rem;
+      position: relative; overflow: hidden;
     }
     .cta-section::before {
       content: '';
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 600px; height: 400px;
-      background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+      width: 800px; height: 600px;
+      background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 60%);
       pointer-events: none;
     }
     .cta-section h2 {
-      font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
-      letter-spacing: -0.02em;
+      font-size: 3rem; font-weight: 900; margin-bottom: 1rem;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff, var(--accent-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .cta-section p {
-      color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;
+    .cta-section > p {
+      color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2.5rem;
     }
-    .cta-email-signup {
-      margin-top: 2rem;
-    }
-    .cta-email-label {
-      color: #a5b4fc; font-size: 0.9rem; margin-bottom: 0.75rem;
-    }
+    .cta-email-signup { margin-top: 2.5rem; }
+    .cta-email-label { color: #a5b4fc; font-size: 0.9rem; margin-bottom: 0.75rem; }
     .cta-email-form {
-      display: flex; gap: 0.5rem; max-width: 420px; margin: 0 auto;
+      display: flex; gap: 0.5rem; max-width: 440px; margin: 0 auto;
     }
     .cta-email-input {
-      flex: 1; padding: 0.75rem 1rem; border-radius: 8px;
-      border: 1px solid rgba(124,58,237,0.3);
-      background: rgba(255,255,255,0.06); color: #fff;
+      flex: 1; padding: 0.85rem 1.25rem; border-radius: 12px;
+      border: 1px solid rgba(124,58,237,0.2);
+      background: rgba(255,255,255,0.04); color: #fff;
       font-size: 0.9rem; outline: none;
-      font-family: inherit;
+      font-family: inherit; transition: all 0.3s;
+      backdrop-filter: blur(10px);
     }
-    .cta-email-input:focus { border-color: var(--accent); }
+    .cta-email-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(124,58,237,0.15); }
     .cta-email-btn {
-      padding: 0.75rem 1.25rem; border-radius: 8px; border: none;
+      padding: 0.85rem 1.5rem; border-radius: 12px; border: none;
       background: linear-gradient(135deg, #7c3aed, #6d28d9);
       color: #fff; font-weight: 700; cursor: pointer;
       white-space: nowrap; font-size: 0.9rem;
-      font-family: inherit; transition: all 0.2s;
+      font-family: inherit; transition: all 0.3s;
     }
-    .cta-email-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(124,58,237,0.3); }
+    .cta-email-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
     .cta-email-success {
-      display: none; color: #10b981; margin-top: 0.5rem; font-size: 0.85rem;
+      display: none; color: #10b981; margin-top: 0.75rem; font-size: 0.9rem;
     }
 
     /* ── Footer ── */
     .footer {
       border-top: 1px solid var(--border);
       padding: 3rem 2rem;
-      text-align: center;
     }
     .footer-inner {
       max-width: 1200px; margin: 0 auto;
@@ -487,49 +795,53 @@
       flex-wrap: wrap; gap: 1rem;
     }
     .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
-    .footer-links a:hover { color: var(--text); }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent-light); }
     .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+      .hero { padding: 7rem 1.5rem 3rem; min-height: auto; }
+      .hero h1 { font-size: 2.25rem; }
+      .hero-stats { gap: 1.5rem; }
+      .hero-stat-value { font-size: 1.25rem; }
       .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
       .features-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
       .metrics-grid { grid-template-columns: repeat(2, 1fr); }
       .usecases-grid { grid-template-columns: 1fr; }
-      .loop-flow { flex-direction: column; align-items: center; }
-      .loop-arrow { transform: rotate(90deg); padding-top: 0; }
-      .loop-return { transform: rotate(90deg); }
       .comparison-table { font-size: 0.8rem; }
       .comparison-table th, .comparison-table td { padding: 0.6rem 0.75rem; }
+      .loop-visual { min-height: 300px; transform: scale(0.7); margin-top: 1rem; }
       .nav-links { display: none; }
       .nav-hamburger { display: block; }
       .nav-links.open {
         display: flex; flex-direction: column;
         position: absolute; top: 64px; left: 0; right: 0;
-        background: rgba(10,10,26,0.95); backdrop-filter: blur(20px);
+        background: rgba(6,6,15,0.95); backdrop-filter: blur(24px);
         padding: 1.5rem 2rem; gap: 1rem;
         border-bottom: 1px solid var(--border);
       }
-      .hero { padding: 8rem 1.5rem 4rem; }
-      .hero h1 { font-size: 2.25rem; }
       .footer-inner { flex-direction: column; text-align: center; }
+      .section-title { font-size: 2rem; }
+      .cta-section h2 { font-size: 2.25rem; }
     }
     @media (max-width: 480px) {
       .hero-actions { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; justify-content: center; }
       .cta-email-form { flex-direction: column; }
       .agents-logos { gap: 1.5rem; }
       .metrics-grid { grid-template-columns: 1fr; }
-      .loop-step { width: 100%; max-width: 260px; }
+      .hero-stats { flex-direction: column; gap: 1rem; }
+      .loop-visual { transform: scale(0.55); }
     }
   </style>
 </head>
 <body>
 
   <!-- Nav -->
-  <nav class="nav">
+  <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">ADOS<span>.</span></a>
       <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="メニュー">
@@ -537,57 +849,65 @@
       </button>
       <div class="nav-links">
         <a href="#comparison">比較</a>
+        <a href="#how-it-works">仕組み</a>
         <a href="#features">機能</a>
         <a href="#pricing">料金</a>
         <a href="#faq">FAQ</a>
         <a href="https://docs.ados.dev" target="_blank" rel="noopener">ドキュメント</a>
-        <a href="https://ados-platform-dashboard.web.app" class="nav-cta">ダッシュボードへ →</a>
+        <a href="https://ados-platform-dashboard.web.app" class="nav-cta">無料で始める →</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-badge">🚀 Copilot を内包し、その先へ</div>
-    <h1>開発を止めない<br>AI DevOps チーム</h1>
-    <p>Issue 解決、CI/CD 修復、SRE 監視、自律改善 —— <br>AI が DevOps チーム全体を 24/7 で回す。あなたはレビューするだけ。</p>
-    <div class="hero-actions">
-      <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル</a>
-      <a href="#features" class="btn-secondary">📖 機能を見る</a>
+    <div class="hero-grid"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-content">
+      <div class="hero-badge"><span class="pulse"></span> Copilot を内包し、その先へ</div>
+      <h1>開発を止めない<br>AI DevOps チーム</h1>
+      <p>Issue 解決、CI/CD 修復、SRE 監視、自律改善 ——<br>AI が DevOps チーム全体を 24/7 で回す。あなたはレビューするだけ。</p>
+      <div class="hero-actions">
+        <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル</a>
+        <a href="#comparison" class="btn-secondary">📊 Copilot と比較する</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">3 VCS</div>
+          <div class="hero-stat-label">GitHub / GitLab / Bitbucket</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">3 AI</div>
+          <div class="hero-stat-label">Copilot / Claude / Codex</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">24/7</div>
+          <div class="hero-stat-label">自律運用</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Demo -->
-  <section class="demo">
+  <!-- Demo Terminal -->
+  <section class="demo reveal">
     <div class="demo-window">
       <div class="demo-titlebar">
         <span class="demo-dot"></span>
         <span class="demo-dot"></span>
         <span class="demo-dot"></span>
+        <span class="demo-titlebar-title">ADOS — ターミナル</span>
       </div>
-      <pre class="demo-code">
-<span class="comment"># 1. Issue を作成 (ラベル付き)</span>
-<span class="keyword">gh issue create</span> <span class="string">--title "ユーザー認証にレート制限を追加"</span> \
-  <span class="string">--label</span> <span class="label">"ados"</span>
-
-<span class="comment"># 2. ADOS が自動検知 → AI エージェントが実装開始</span>
-<span class="func">🤖 ADOS Agent:</span> Issue #42 を検知
-  → リポジトリを解析中...
-  → <span class="string">internal/api/auth.go</span> にレート制限ミドルウェアを追加
-  → テスト作成・実行: <span class="label">PASS</span>
-  → Pull Request <span class="label">#43</span> を作成しました ✅
-
-<span class="comment"># 3. あなたがレビュー → マージ</span>
-<span class="keyword">gh pr merge</span> <span class="string">43</span> <span class="string">--squash</span>
-      </pre>
+      <pre class="demo-code" id="demo-terminal"><span class="typing-cursor" id="demo-cursor"></span></pre>
     </div>
   </section>
 
-  <!-- Comparison vs Copilot -->
-  <section class="comparison" id="comparison">
+  <!-- Comparison -->
+  <section class="comparison reveal" id="comparison">
     <h2 class="section-title">Copilot Coding Agent との違い</h2>
-    <p class="section-subtitle">Copilot は「コードを書く AI」。ADOS は Copilot を内包し、DevOps チーム全体を回すプラットフォームです。</p>
-    <div class="comparison-table-wrap">
+    <p class="section-subtitle">Copilot は「コードを書く AI」。ADOS は Copilot を内包し、<br>DevOps チーム全体を回すプラットフォームです。</p>
+    <div class="comparison-table-wrap reveal reveal-delay-1">
       <table class="comparison-table">
         <thead>
           <tr>
@@ -609,25 +929,25 @@
         </tbody>
       </table>
     </div>
-    <p class="comparison-note">💡 ADOS は Copilot CLI を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。</p>
+    <p class="comparison-note reveal reveal-delay-2">💡 ADOS は Copilot を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。</p>
   </section>
 
   <!-- How It Works -->
   <section class="how-it-works" id="how-it-works">
-    <h2 class="section-title">3 ステップで自動化</h2>
-    <p class="section-subtitle">ADOS はあなたの GitHub リポジトリと連携し、Issue を自動で解決します。</p>
+    <h2 class="section-title reveal">3 ステップで自動化</h2>
+    <p class="section-subtitle reveal">ADOS はあなたのリポジトリと連携し、Issue を自動で解決します。</p>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal reveal-delay-1">
         <div class="step-num">1</div>
         <h3>リポジトリを接続</h3>
-        <p>GitHub と連携するだけ。リポジトリの設定・ラベルをカスタマイズできます。</p>
+        <p>GitHub / GitLab / Bitbucket と連携。設定・ラベルをカスタマイズ。</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-delay-2">
         <div class="step-num">2</div>
         <h3>Issue を登録</h3>
-        <p>通常どおり Issue を作成し、ADOS ラベルを付与。AI が自動で解析を開始します。</p>
+        <p>通常どおり Issue を作成し、ADOS ラベルを付与。AI が自動で解析を開始。</p>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-delay-3">
         <div class="step-num">3</div>
         <h3>PR をレビュー</h3>
         <p>AI がコードを実装して PR を作成。あなたはレビューしてマージするだけ。</p>
@@ -637,145 +957,202 @@
 
   <!-- Closed-Loop DevOps -->
   <section class="closed-loop">
-    <h2 class="section-title">Closed-Loop DevOps</h2>
-    <p class="section-subtitle">ADOS は「監視 → 検知 → 修復 → デプロイ」の完全自律ループを実現します。<br>人間が寝ている間も、AI がプロダクトを守り続けます。</p>
-    <div class="loop-flow">
-      <div class="loop-step">
-        <div class="loop-icon">📡</div>
-        <div class="loop-label">監視</div>
-        <div class="loop-desc">SRE Agent がエラー率<br>レイテンシ・OOM を常時監視</div>
+    <h2 class="section-title reveal">Closed-Loop DevOps</h2>
+    <p class="section-subtitle reveal">「監視 → 検知 → 修復 → デプロイ」の完全自律ループ。<br>人間が寝ている間も、AI がプロダクトを守り続けます。</p>
+    <div class="loop-visual reveal">
+      <svg class="loop-svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="arc-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.6"/>
+          </linearGradient>
+        </defs>
+        <circle cx="250" cy="250" r="155" fill="none" stroke="url(#arc-grad)"
+          stroke-width="2" stroke-dasharray="8 8" opacity="0.4">
+          <animateTransform attributeName="transform" type="rotate"
+            from="0 250 250" to="360 250 250" dur="30s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="250" cy="95" r="5" fill="#7c3aed">
+          <animateTransform attributeName="transform" type="rotate"
+            from="0 250 250" to="360 250 250" dur="6s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="250" cy="95" r="3" fill="#a78bfa">
+          <animateTransform attributeName="transform" type="rotate"
+            from="0 250 250" to="360 250 250" dur="6s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      <div class="loop-center">
+        <div class="loop-center-icon">🔄</div>
+        ADOS
       </div>
-      <div class="loop-arrow">→</div>
-      <div class="loop-step">
-        <div class="loop-icon">🚨</div>
-        <div class="loop-label">検知 &amp; Issue 化</div>
-        <div class="loop-desc">閾値超過を自動検知し<br>Issue を自動生成</div>
+      <div class="loop-node loop-node-1">
+        <div class="loop-node-icon">📡</div>
+        <div class="loop-node-label">監視</div>
+        <div class="loop-node-desc">SRE Agent が<br>常時モニタリング</div>
       </div>
-      <div class="loop-arrow">→</div>
-      <div class="loop-step">
-        <div class="loop-icon">🤖</div>
-        <div class="loop-label">AI 修復</div>
-        <div class="loop-desc">最適な AI Agent が分析<br>実装・PR を作成</div>
+      <div class="loop-node loop-node-2">
+        <div class="loop-node-icon">🚨</div>
+        <div class="loop-node-label">検知 &amp; Issue 化</div>
+        <div class="loop-node-desc">閾値超過を自動検知<br>Issue を自動生成</div>
       </div>
-      <div class="loop-arrow">→</div>
-      <div class="loop-step">
-        <div class="loop-icon">✅</div>
-        <div class="loop-label">デプロイ</div>
-        <div class="loop-desc">マージ後 CI/CD が<br>自動デプロイ</div>
+      <div class="loop-node loop-node-3">
+        <div class="loop-node-icon">🤖</div>
+        <div class="loop-node-label">AI 修復</div>
+        <div class="loop-node-desc">最適 AI Agent が<br>修復 PR を作成</div>
       </div>
-      <div class="loop-arrow loop-return">↩</div>
+      <div class="loop-node loop-node-4">
+        <div class="loop-node-icon">✅</div>
+        <div class="loop-node-label">デプロイ</div>
+        <div class="loop-node-desc">マージ → CI/CD<br>自動デプロイ</div>
+      </div>
     </div>
-    <p class="loop-caption">Copilot Coding Agent は②→③だけ。ADOS は①〜④のループ全体を自律運用します。</p>
+    <p class="loop-caption reveal">Copilot は <em>Issue → PR</em> だけ。ADOS は<em>全ループを自律運用</em>します。</p>
   </section>
 
   <!-- Features -->
   <section class="features" id="features">
-    <h2 class="section-title">主な機能</h2>
-    <p class="section-subtitle">開発チームの生産性を 10x にする機能群</p>
+    <h2 class="section-title reveal">主な機能</h2>
+    <p class="section-subtitle reveal">開発チームの生産性を 10x にする機能群</p>
     <div class="features-grid">
-      <div class="feature">
+      <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">🤖</div>
         <h3>マルチ AI エージェント</h3>
-        <p>GitHub Copilot、Claude、Codex を Issue の複雑さに応じて自動選択。最適なエージェントが担当します。</p>
+        <p>Copilot、Claude、Codex を Issue の複雑さに応じて自動選択。フォールバック付きで失敗しても止まりません。</p>
+        <span class="feature-tag">Copilot にはない</span>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🔄</div>
         <h3>パイプライン自動修復</h3>
-        <p>CI/CD の失敗を自動検知し、修復 PR を作成。ビルドが壊れていても放置しません。</p>
+        <p>CI/CD の失敗を自動検知し、修復 PR を作成。ビルドが壊れていても深夜でも、放置しません。</p>
+        <span class="feature-tag">24/7 自動</span>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">📊</div>
         <h3>ダッシュボード</h3>
-        <p>ジョブの統計、成功率、トレンド、エージェント別パフォーマンスをリアルタイムで可視化。</p>
+        <p>ジョブ統計、成功率、トレンド、エージェント別パフォーマンスをリアルタイムで可視化。</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">🖥️</div>
         <h3>セルフホスト Runner</h3>
-        <p>自前の Docker 環境で AI エージェントを実行。クラウドコストを大幅に削減できます。</p>
+        <p>Docker 環境で AI エージェントをオンプレ実行。コードが外部に出ることはありません。</p>
+        <span class="feature-tag">セキュア</span>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🔀</div>
         <h3>ワークフロー</h3>
-        <p>Plan → Approval → Implement → Review の 4 段階ワークフロー。人間のレビューをゲートに設定可能。</p>
+        <p>Plan → Approval → Implement → Review の 4 段階。人間のレビューをゲートに設定可能。</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">💬</div>
         <h3>Agentic Chat</h3>
-        <p>ブラウザから直接 AI エージェントとチャット。リポジトリのコンテキストを理解した会話が可能。</p>
+        <p>ブラウザから AI エージェントとチャット。リポジトリのコンテキストを理解した会話が可能。</p>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">📡</div>
         <h3>SRE 運用監視</h3>
-        <p>GCP のエラー率・レイテンシ・ OOM を常時監視。閾値超過時に自動で Issue を作成し、AI が修復を開始。Copilot にはない矣視 → 対応の自律ループ。</p>
+        <p>エラー率・レイテンシ・OOM を常時監視。閾値超過で自動 Issue 化、AI が即座に修復開始。</p>
+        <span class="feature-tag">Copilot にはない</span>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🧠</div>
-        <h3>AI バックログ & AutoPilot</h3>
-        <p>リポジトリを AI が 2 パスで分析し、改善 Issue を自動生成。AutoPilot を有効にすれば、生成された Issue を自律的に実装し続けます。</p>
+        <h3>AI バックログ &amp; AutoPilot</h3>
+        <p>AI が 2 パスで分析し改善 Issue を自動生成。AutoPilot ON で自律的に実装し続けます。</p>
+        <span class="feature-tag">自律改善</span>
       </div>
-      <div class="feature">
+      <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">🔒</div>
         <h3>マルチ VCS 対応</h3>
-        <p>GitHub、GitLab、Bitbucket に対応。特定の VCS にロックされず、既存のワークフローを変えずに導入できます。Copilot は GitHub 専用。</p>
+        <p>GitHub、GitLab、Bitbucket に対応。VCS にロックされず、既存のワークフローのまま導入。</p>
+        <span class="feature-tag">Copilot にはない</span>
       </div>
     </div>
   </section>
 
-  <!-- Impact Metrics -->
+  <!-- Metrics -->
   <section class="metrics">
-    <h2 class="section-title">導入効果</h2>
-    <p class="section-subtitle">ADOS が開発チームにもたらすインパクト</p>
+    <h2 class="section-title reveal">導入効果</h2>
+    <p class="section-subtitle reveal">ADOS が開発チームにもたらすインパクト</p>
     <div class="metrics-grid">
-      <div class="metric">
-        <div class="metric-value">80<span>%</span></div>
+      <div class="metric reveal reveal-delay-1">
+        <div class="metric-value" data-count="80" data-suffix="%">0%</div>
         <div class="metric-label">インシデント初動の短縮</div>
         <div class="metric-desc">SRE Agent が異常を即座に検知し、AI が修復 PR を自動生成</div>
       </div>
-      <div class="metric">
-        <div class="metric-value">10<span>h+</span></div>
+      <div class="metric reveal reveal-delay-2">
+        <div class="metric-value" data-count="10" data-suffix="h+">0h+</div>
         <div class="metric-label">週あたりの工数削減</div>
         <div class="metric-desc">定型 Issue・CI 修復・バックログ整理を AI が自動処理</div>
       </div>
-      <div class="metric">
-        <div class="metric-value">24<span>/7</span></div>
+      <div class="metric reveal reveal-delay-3">
+        <div class="metric-value" data-count="24" data-suffix="/7">0/7</div>
         <div class="metric-label">ノンストップ開発</div>
         <div class="metric-desc">AutoPilot が深夜も休日もリポジトリを改善し続ける</div>
       </div>
-      <div class="metric">
-        <div class="metric-value">0</div>
+      <div class="metric reveal reveal-delay-4">
+        <div class="metric-value" data-count="0" data-suffix="" data-is-zero="true">0</div>
         <div class="metric-label">ベンダーロックイン</div>
-        <div class="metric-desc">マルチ VCS・マルチ AI・セルフホスト対応で依存リスクなし</div>
+        <div class="metric-desc">マルチ VCS・マルチ AI・セルフホスト対応で依存なし</div>
       </div>
     </div>
   </section>
 
   <!-- Use Cases -->
   <section class="usecases">
-    <h2 class="section-title">こんなチームに最適</h2>
-    <p class="section-subtitle">ADOS は「コードを書く」だけでなく「開発チームを回す」プラットフォームです</p>
+    <h2 class="section-title reveal">こんなチームに最適</h2>
+    <p class="section-subtitle reveal">「コードを書く」だけでなく「開発チームを回す」プラットフォームです</p>
     <div class="usecases-grid">
-      <div class="usecase">
-        <div class="usecase-emoji">🔥</div>
+      <div class="usecase reveal reveal-delay-1">
+        <span class="usecase-emoji">🔥</span>
         <h3>深夜の障害対応</h3>
-        <p>SRE Agent がエラー率の急上昇を検知 → 原因を特定 → 修復 PR を自動生成。エンジニアが起きる前に修正が準備されている世界。</p>
+        <p>SRE Agent がエラー率の急上昇を検知 → 原因を特定 → 修復 PR を自動生成。</p>
+        <div class="usecase-before-after">
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
+            <span style="color:var(--text-muted)">深夜にアラート → 起きて対応 → 翌日ぐったり</span>
+          </div>
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
+            <span style="color:var(--text-muted)">起きたら修復 PR が待っている ☕</span>
+          </div>
+        </div>
       </div>
-      <div class="usecase">
-        <div class="usecase-emoji">🔄</div>
+      <div class="usecase reveal reveal-delay-2">
+        <span class="usecase-emoji">🔄</span>
         <h3>CI が壊れたまま放置</h3>
-        <p>Pipeline Watcher が CI/CD の失敗を常時監視。テストの修正から依存関係の更新まで、放置されがちな問題を AI が即座に修復。</p>
+        <p>Pipeline Watcher が CI/CD の失敗を常時監視。テスト修正から依存更新まで自動。</p>
+        <div class="usecase-before-after">
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
+            <span style="color:var(--text-muted)">「誰かが直すだろう」→ 3日間赤いまま</span>
+          </div>
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
+            <span style="color:var(--text-muted)">失敗から 5 分で修復 PR が届く</span>
+          </div>
+        </div>
       </div>
-      <div class="usecase">
-        <div class="usecase-emoji">📋</div>
+      <div class="usecase reveal reveal-delay-3">
+        <span class="usecase-emoji">📋</span>
         <h3>技術的負債の可視化</h3>
-        <p>AI がリポジトリ全体を分析し、改善点をバックログとして Issue 化。「やらなきゃいけないけど手が回らない」を解消。</p>
+        <p>AI がリポジトリ全体を分析し、改善点をバックログとして Issue 化。</p>
+        <div class="usecase-before-after">
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
+            <span style="color:var(--text-muted)">「いつかリファクタしよう」→ 永遠に来ない</span>
+          </div>
+          <div class="usecase-ba-row">
+            <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
+            <span style="color:var(--text-muted)">AI が Issue 化 → AutoPilot が改善し続ける</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- AI Agents -->
-  <section class="agents">
+  <section class="agents reveal">
     <h2 class="section-title">対応 AI エージェント</h2>
-    <p class="section-subtitle">Issue の難易度に応じて最適なエージェントを自動選択</p>
+    <p class="section-subtitle">Issue の難易度に応じて最適なエージェントを自動選択。フォールバック付き。</p>
     <div class="agents-logos">
       <div class="agent-logo">
         <div class="agent-logo-icon">🐙</div>
@@ -794,10 +1171,10 @@
 
   <!-- Pricing -->
   <section class="pricing" id="pricing">
-    <h2 class="section-title">料金プラン</h2>
-    <p class="section-subtitle">小さく始めて、チームの成長に合わせてスケール</p>
+    <h2 class="section-title reveal">料金プラン</h2>
+    <p class="section-subtitle reveal">小さく始めて、チームの成長に合わせてスケール</p>
     <div class="pricing-grid">
-      <div class="price-card">
+      <div class="price-card reveal reveal-delay-1">
         <h3>Free</h3>
         <div class="price-amount">¥0</div>
         <div class="price-note">ずっと無料</div>
@@ -809,7 +1186,7 @@
         </ul>
         <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">🎁 14日間無料トライアル</a>
       </div>
-      <div class="price-card popular">
+      <div class="price-card popular reveal reveal-delay-2">
         <h3>Pro</h3>
         <div class="price-amount">¥4,980</div>
         <div class="price-note">/月</div>
@@ -823,7 +1200,7 @@
         </ul>
         <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-primary">Pro にアップグレード</a>
       </div>
-      <div class="price-card">
+      <div class="price-card reveal reveal-delay-3">
         <h3>Team</h3>
         <div class="price-amount">¥14,980</div>
         <div class="price-note">/シート/月</div>
@@ -842,30 +1219,30 @@
 
   <!-- FAQ -->
   <section class="faq" id="faq">
-    <h2 class="section-title">よくある質問</h2>
-    <p class="section-subtitle">導入前に気になるポイントをまとめました</p>
+    <h2 class="section-title reveal">よくある質問</h2>
+    <p class="section-subtitle reveal">導入前に気になるポイントをまとめました</p>
     <div class="faq-list">
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>GitHub Copilot Coding Agent とは何が違いますか？</summary>
         <p>Copilot Coding Agent は「Issue を受けてコードを書く 1 人のジュニア開発者」です。ADOS は Copilot を含む複数の AI を束ねて「チーム全体の開発運用を自律的に回す」プラットフォームです。SRE 監視、CI/CD 自動修復、バックログ自動生成、AutoPilot による自律改善など、Copilot にはない機能を多数搭載しています。</p>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>GitHub 以外の VCS でも使えますか？</summary>
         <p>はい。GitHub、GitLab、Bitbucket に対応しています。既存のソース管理を変えることなく導入可能です。</p>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>自社のインフラで動かせますか？</summary>
         <p>はい。セルフホスト Docker Runner を使えば、自社のオンプレミス環境やプライベートクラウドで AI エージェントを実行できます。コードが外部に出ることはありません。</p>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>AutoPilot とは何ですか？</summary>
         <p>AutoPilot は ADOS の自律改善モードです。有効にすると、AI がリポジトリのコードを定期的に分析し、改善項目を自動で Issue 化・実装します。人間は承認するだけで、リポジトリが継続的に改善されていきます。</p>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>どの AI エージェントが使われるか選べますか？</summary>
         <p>はい。Issue の複雑さに応じた自動選択のほか、手動で指定することも可能です。Copilot CLI、Claude Code、Codex に対応しています。</p>
       </details>
-      <details class="faq-item">
+      <details class="faq-item reveal">
         <summary>セキュリティは大丈夫ですか？</summary>
         <p>セルフホスト Runner によりコードが外部に出ることはありません。また、全ワークフローに Plan → Approval → Implement の承認ゲートを設定でき、AI が勝手にデプロイすることはありません。</p>
       </details>
@@ -873,7 +1250,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="cta-section">
+  <section class="cta-section reveal">
     <h2>今すぐ始めよう</h2>
     <p>14日間の Pro トライアル付き。クレジットカード不要。</p>
     <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル →</a>
@@ -901,6 +1278,144 @@
   </footer>
 
   <script>
+  // ═══════════════════════════════════════════
+  // Scroll Reveal (IntersectionObserver)
+  // ═══════════════════════════════════════════
+  (function() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      observer.observe(el);
+    });
+  })();
+
+  // ═══════════════════════════════════════════
+  // Nav scroll effect
+  // ═══════════════════════════════════════════
+  (function() {
+    var nav = document.getElementById('nav');
+    window.addEventListener('scroll', function() {
+      if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+  })();
+
+  // ═══════════════════════════════════════════
+  // Terminal Typewriter Demo
+  // ═══════════════════════════════════════════
+  (function() {
+    var lines = [
+      { text: '# 1. Issue を作成 (ラベル付き)', cls: 'comment', delay: 0 },
+      { text: 'gh issue create --title "ユーザー認証にレート制限を追加" \\', cls: 'keyword', delay: 600 },
+      { text: '  --label "ados"', cls: 'label', delay: 200 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 2. ADOS が自動検知 → AI エージェントが実装開始', cls: 'comment', delay: 300 },
+      { text: '🤖 ADOS Agent: Issue #42 を検知', cls: 'func', delay: 800 },
+      { text: '  → リポジトリを解析中...', cls: 'string', delay: 600 },
+      { text: '  → internal/api/auth.go にレート制限を追加', cls: 'string', delay: 800 },
+      { text: '  → テスト作成・実行: PASS ✅', cls: 'label', delay: 600 },
+      { text: '  → Pull Request #43 を作成しました ✅', cls: 'label', delay: 500 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 3. あなたがレビュー → マージ', cls: 'comment', delay: 300 },
+      { text: 'gh pr merge 43 --squash', cls: 'keyword', delay: 600 },
+      { text: '✨ マージ完了！ CI/CD が自動デプロイを開始...', cls: 'label', delay: 500 },
+    ];
+
+    var terminal = document.getElementById('demo-terminal');
+    var cursor = document.getElementById('demo-cursor');
+    var lineIndex = 0;
+    var charIndex = 0;
+    var currentSpan = null;
+    var started = false;
+
+    function typeNextChar() {
+      if (lineIndex >= lines.length) {
+        if (cursor) cursor.style.display = 'none';
+        return;
+      }
+
+      var line = lines[lineIndex];
+
+      if (charIndex === 0) {
+        currentSpan = document.createElement('span');
+        if (line.cls) currentSpan.className = line.cls;
+        terminal.insertBefore(currentSpan, cursor);
+      }
+
+      if (charIndex < line.text.length) {
+        currentSpan.textContent += line.text[charIndex];
+        charIndex++;
+        setTimeout(typeNextChar, 18 + Math.random() * 22);
+      } else {
+        terminal.insertBefore(document.createTextNode('\n'), cursor);
+        lineIndex++;
+        charIndex = 0;
+        var nextDelay = lineIndex < lines.length ? lines[lineIndex].delay : 0;
+        setTimeout(typeNextChar, nextDelay);
+      }
+    }
+
+    var demoObserver = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !started) {
+        started = true;
+        setTimeout(typeNextChar, 500);
+      }
+    }, { threshold: 0.3 });
+    demoObserver.observe(terminal.closest('.demo'));
+  })();
+
+  // ═══════════════════════════════════════════
+  // Counter Animation for Metrics
+  // ═══════════════════════════════════════════
+  (function() {
+    var counters = document.querySelectorAll('.metric-value[data-count]');
+    var counted = new Set();
+
+    var counterObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !counted.has(entry.target)) {
+          counted.add(entry.target);
+          var el = entry.target;
+          var target = parseInt(el.getAttribute('data-count'));
+          var suffix = el.getAttribute('data-suffix') || '';
+          var isZero = el.getAttribute('data-is-zero') === 'true';
+
+          if (isZero) {
+            el.textContent = '0';
+            return;
+          }
+
+          var duration = 1500;
+          var start = performance.now();
+
+          function update(now) {
+            var elapsed = now - start;
+            var progress = Math.min(elapsed / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = Math.round(target * eased);
+            el.innerHTML = current + '<span>' + suffix + '</span>';
+            if (progress < 1) requestAnimationFrame(update);
+          }
+          requestAnimationFrame(update);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(function(c) { counterObserver.observe(c); });
+  })();
+
+  // ═══════════════════════════════════════════
+  // Email Signup
+  // ═══════════════════════════════════════════
   function handleEmailSignup(e) {
     e.preventDefault();
     var email = document.getElementById('signup-email').value;
@@ -911,20 +1426,23 @@
     document.getElementById('email-success').style.display = 'block';
   }
 
-  // Close mobile menu on link click
+  // ═══════════════════════════════════════════
+  // Mobile menu & smooth scroll
+  // ═══════════════════════════════════════════
   document.querySelectorAll('.nav-links a').forEach(function(a) {
     a.addEventListener('click', function() {
       document.querySelector('.nav-links').classList.remove('open');
     });
   });
 
-  // Smooth scroll for anchor links
   document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     anchor.addEventListener('click', function(e) {
       e.preventDefault();
       var target = document.querySelector(this.getAttribute('href'));
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var offset = 80;
+        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
       }
     });
   });
