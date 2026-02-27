@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADOS — AI DevOps Agent | GitHub Issue を AI が自動で解決</title>
-  <meta name="description" content="ADOS は GitHub Issue を AI エージェントが自動で解決し、Pull Request を作成する AI DevOps プラットフォームです。Copilot・Claude・Codex に対応。">
-  <meta name="keywords" content="AI DevOps, GitHub, Issue, Pull Request, AI Agent, Copilot, Claude, Codex, 自動化, CI/CD">
-  <meta property="og:title" content="ADOS — AI DevOps Agent">
-  <meta property="og:description" content="GitHub Issue を AI が自動で解決。コードを書いて PR を作成します。">
+  <title>ADOS — AI DevOps Platform | 開発を止めない AI DevOps チーム</title>
+  <meta name="description" content="ADOS は Issue 解決・CI/CD 修復・SRE 監視・自律改善を AI が 24/7 で回す DevOps プラットフォーム。Copilot を内包し、その先へ。">
+  <meta name="keywords" content="AI DevOps, GitHub, GitLab, Bitbucket, Issue, Pull Request, AI Agent, Copilot, Claude, Codex, 自動化, CI/CD, SRE, AutoPilot">
+  <meta property="og:title" content="ADOS — AI DevOps Platform">
+  <meta property="og:description" content="Copilot はコードを書く。ADOS はチームを回す。Issue 解決から SRE 監視まで、AI が DevOps を自律的に運用。">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ados.dev">
   <meta property="og:image" content="https://ados.dev/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ADOS — AI DevOps Agent">
-  <meta name="twitter:description" content="GitHub Issue を AI が自動で解決。コードを書いて PR を作成します。">
+  <meta name="twitter:title" content="ADOS — AI DevOps Platform">
+  <meta name="twitter:description" content="Copilot はコードを書く。ADOS はチームを回す。Issue 解決から SRE 監視まで、AI が DevOps を自律的に運用。">
   <meta name="twitter:image" content="https://ados.dev/og-image.png">
   <link rel="canonical" href="https://ados.dev">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
@@ -209,6 +209,155 @@
     .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .feature p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
 
+    /* ── Comparison ── */
+    .comparison {
+      max-width: 1000px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .comparison-table-wrap {
+      overflow-x: auto; margin-top: 2rem;
+    }
+    .comparison-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 0.85rem 1.25rem; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table thead th {
+      font-weight: 700; font-size: 0.95rem;
+      padding-bottom: 1rem; color: var(--text-muted);
+      border-bottom: 2px solid var(--border);
+    }
+    .comparison-table thead th.ados-col {
+      color: var(--accent-light); font-weight: 800;
+    }
+    .comparison-table td { color: var(--text-muted); }
+    .comparison-table td:first-child { color: var(--text); font-weight: 600; }
+    .comparison-table td.ados-col {
+      color: var(--green); font-weight: 600;
+    }
+    .comparison-table tbody tr:hover {
+      background: rgba(124,58,237,0.05);
+    }
+    .comparison-note {
+      text-align: center; color: var(--text-muted);
+      font-size: 0.9rem; margin-top: 2rem;
+      padding: 1.25rem; border-radius: 12px;
+      background: rgba(124,58,237,0.08);
+      border: 1px solid rgba(124,58,237,0.2);
+      line-height: 1.7;
+    }
+    .comparison-note strong { color: var(--accent-light); }
+
+    /* ── Closed-Loop ── */
+    .closed-loop {
+      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .loop-flow {
+      display: flex; align-items: flex-start; justify-content: center;
+      flex-wrap: wrap; gap: 0.5rem; margin-top: 3rem;
+    }
+    .loop-step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem 1.25rem;
+      text-align: center; width: 180px;
+      transition: all 0.3s;
+    }
+    .loop-step:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .loop-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .loop-label { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .loop-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .loop-arrow {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; color: var(--accent-light); font-weight: 700;
+      min-width: 32px; padding-top: 1.5rem;
+    }
+    .loop-return { color: var(--green); }
+    .loop-caption {
+      text-align: center; margin-top: 2rem;
+      color: var(--text-muted); font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* ── Metrics ── */
+    .metrics {
+      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .metric {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem 1.5rem; text-align: center;
+      transition: all 0.3s;
+    }
+    .metric:hover { border-color: var(--accent); }
+    .metric-value {
+      font-size: 3rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-light), var(--green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2; margin-bottom: 0.5rem;
+    }
+    .metric-value span { font-size: 1.5rem; }
+    .metric-label {
+      font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem;
+    }
+    .metric-desc {
+      font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;
+    }
+
+    /* ── Use Cases ── */
+    .usecases {
+      max-width: 1000px; margin: 0 auto; padding: 4rem 2rem 6rem;
+    }
+    .usecases-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .usecase {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      transition: all 0.3s;
+    }
+    .usecase:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .usecase-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+    .usecase h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .usecase p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── FAQ ── */
+    .faq {
+      max-width: 800px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .faq-list { margin-top: 2rem; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 0.75rem;
+      background: var(--bg-card);
+      overflow: hidden;
+    }
+    .faq-item summary {
+      padding: 1.25rem 1.5rem;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; color: var(--text);
+      list-style: none; display: flex; align-items: center; justify-content: space-between;
+      transition: color 0.2s;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+'; font-size: 1.25rem; color: var(--accent-light);
+      font-weight: 700; flex-shrink: 0; margin-left: 1rem;
+      transition: transform 0.2s;
+    }
+    .faq-item[open] summary::after { content: '−'; }
+    .faq-item[open] summary { color: var(--accent-light); }
+    .faq-item p {
+      padding: 0 1.5rem 1.25rem;
+      color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;
+    }
+
     /* ── Pricing ── */
     .pricing {
       max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
@@ -347,6 +496,13 @@
       .steps { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .usecases-grid { grid-template-columns: 1fr; }
+      .loop-flow { flex-direction: column; align-items: center; }
+      .loop-arrow { transform: rotate(90deg); padding-top: 0; }
+      .loop-return { transform: rotate(90deg); }
+      .comparison-table { font-size: 0.8rem; }
+      .comparison-table th, .comparison-table td { padding: 0.6rem 0.75rem; }
       .nav-links { display: none; }
       .nav-hamburger { display: block; }
       .nav-links.open {
@@ -365,6 +521,8 @@
       .btn-primary, .btn-secondary { width: 100%; text-align: center; }
       .cta-email-form { flex-direction: column; }
       .agents-logos { gap: 1.5rem; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .loop-step { width: 100%; max-width: 260px; }
     }
   </style>
 </head>
@@ -378,9 +536,10 @@
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="#how-it-works">仕組み</a>
+        <a href="#comparison">比較</a>
         <a href="#features">機能</a>
         <a href="#pricing">料金</a>
+        <a href="#faq">FAQ</a>
         <a href="https://docs.ados.dev" target="_blank" rel="noopener">ドキュメント</a>
         <a href="https://ados-platform-dashboard.web.app" class="nav-cta">ダッシュボードへ →</a>
       </div>
@@ -389,9 +548,9 @@
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-badge">🚀 AI DevOps プラットフォーム</div>
-    <h1>GitHub Issue を<br>AI が自動で解決</h1>
-    <p>Issue にラベルを付けるだけ。AI エージェントがコードを読み、実装し、Pull Request を作成します。<br>あなたはレビューするだけ。</p>
+    <div class="hero-badge">🚀 Copilot を内包し、その先へ</div>
+    <h1>開発を止めない<br>AI DevOps チーム</h1>
+    <p>Issue 解決、CI/CD 修復、SRE 監視、自律改善 —— <br>AI が DevOps チーム全体を 24/7 で回す。あなたはレビューするだけ。</p>
     <div class="hero-actions">
       <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル</a>
       <a href="#features" class="btn-secondary">📖 機能を見る</a>
@@ -424,6 +583,35 @@
     </div>
   </section>
 
+  <!-- Comparison vs Copilot -->
+  <section class="comparison" id="comparison">
+    <h2 class="section-title">Copilot Coding Agent との違い</h2>
+    <p class="section-subtitle">Copilot は「コードを書く AI」。ADOS は Copilot を内包し、DevOps チーム全体を回すプラットフォームです。</p>
+    <div class="comparison-table-wrap">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>GitHub Copilot<br>Coding Agent</th>
+            <th class="ados-col">ADOS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Issue → PR 自動生成</td><td>✅</td><td class="ados-col">✅</td></tr>
+          <tr><td>対応 VCS</td><td>GitHub のみ</td><td class="ados-col">GitHub / GitLab / Bitbucket</td></tr>
+          <tr><td>AI エージェント</td><td>Copilot のみ</td><td class="ados-col">Copilot + Claude + Codex 自動選択</td></tr>
+          <tr><td>CI/CD 失敗の自動修復</td><td>同一 PR 内のみ</td><td class="ados-col">全パイプラインを常時監視・修復</td></tr>
+          <tr><td>SRE 運用監視</td><td>—</td><td class="ados-col">エラー率・レイテンシ・OOM を監視</td></tr>
+          <tr><td>AutoPilot（自律改善）</td><td>—</td><td class="ados-col">リポジトリを自律的に改善し続ける</td></tr>
+          <tr><td>AI バックログ生成</td><td>—</td><td class="ados-col">技術的負債を AI が分析・Issue 化</td></tr>
+          <tr><td>セルフホスト実行</td><td>—</td><td class="ados-col">Docker Runner でオンプレ実行可能</td></tr>
+          <tr><td>複数リポジトリ横断</td><td>1 リポジトリ単位</td><td class="ados-col">組織全体を一元管理</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="comparison-note">💡 ADOS は Copilot CLI を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。</p>
+  </section>
+
   <!-- How It Works -->
   <section class="how-it-works" id="how-it-works">
     <h2 class="section-title">3 ステップで自動化</h2>
@@ -445,6 +633,39 @@
         <p>AI がコードを実装して PR を作成。あなたはレビューしてマージするだけ。</p>
       </div>
     </div>
+  </section>
+
+  <!-- Closed-Loop DevOps -->
+  <section class="closed-loop">
+    <h2 class="section-title">Closed-Loop DevOps</h2>
+    <p class="section-subtitle">ADOS は「監視 → 検知 → 修復 → デプロイ」の完全自律ループを実現します。<br>人間が寝ている間も、AI がプロダクトを守り続けます。</p>
+    <div class="loop-flow">
+      <div class="loop-step">
+        <div class="loop-icon">📡</div>
+        <div class="loop-label">監視</div>
+        <div class="loop-desc">SRE Agent がエラー率<br>レイテンシ・OOM を常時監視</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-icon">🚨</div>
+        <div class="loop-label">検知 &amp; Issue 化</div>
+        <div class="loop-desc">閾値超過を自動検知し<br>Issue を自動生成</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-icon">🤖</div>
+        <div class="loop-label">AI 修復</div>
+        <div class="loop-desc">最適な AI Agent が分析<br>実装・PR を作成</div>
+      </div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">
+        <div class="loop-icon">✅</div>
+        <div class="loop-label">デプロイ</div>
+        <div class="loop-desc">マージ後 CI/CD が<br>自動デプロイ</div>
+      </div>
+      <div class="loop-arrow loop-return">↩</div>
+    </div>
+    <p class="loop-caption">Copilot Coding Agent は②→③だけ。ADOS は①〜④のループ全体を自律運用します。</p>
   </section>
 
   <!-- Features -->
@@ -485,17 +706,68 @@
       <div class="feature">
         <div class="feature-icon">📡</div>
         <h3>SRE 運用監視</h3>
-        <p>GitHub Actions の失敗パターンを監視し、自動で Issue を作成。インシデント対応を高速化。</p>
+        <p>GCP のエラー率・レイテンシ・ OOM を常時監視。閾値超過時に自動で Issue を作成し、AI が修復を開始。Copilot にはない矣視 → 対応の自律ループ。</p>
       </div>
       <div class="feature">
         <div class="feature-icon">🧠</div>
-        <h3>AI バックログ</h3>
-        <p>リポジトリを AI が分析し、改善 Issue のバックログを自動生成。技術的負債を可視化。</p>
+        <h3>AI バックログ & AutoPilot</h3>
+        <p>リポジトリを AI が 2 パスで分析し、改善 Issue を自動生成。AutoPilot を有効にすれば、生成された Issue を自律的に実装し続けます。</p>
       </div>
       <div class="feature">
         <div class="feature-icon">🔒</div>
         <h3>マルチ VCS 対応</h3>
-        <p>GitHub、GitLab、Bitbucket に対応。既存のワークフローを変えずに導入できます。</p>
+        <p>GitHub、GitLab、Bitbucket に対応。特定の VCS にロックされず、既存のワークフローを変えずに導入できます。Copilot は GitHub 専用。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Metrics -->
+  <section class="metrics">
+    <h2 class="section-title">導入効果</h2>
+    <p class="section-subtitle">ADOS が開発チームにもたらすインパクト</p>
+    <div class="metrics-grid">
+      <div class="metric">
+        <div class="metric-value">80<span>%</span></div>
+        <div class="metric-label">インシデント初動の短縮</div>
+        <div class="metric-desc">SRE Agent が異常を即座に検知し、AI が修復 PR を自動生成</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">10<span>h+</span></div>
+        <div class="metric-label">週あたりの工数削減</div>
+        <div class="metric-desc">定型 Issue・CI 修復・バックログ整理を AI が自動処理</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">24<span>/7</span></div>
+        <div class="metric-label">ノンストップ開発</div>
+        <div class="metric-desc">AutoPilot が深夜も休日もリポジトリを改善し続ける</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">0</div>
+        <div class="metric-label">ベンダーロックイン</div>
+        <div class="metric-desc">マルチ VCS・マルチ AI・セルフホスト対応で依存リスクなし</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use Cases -->
+  <section class="usecases">
+    <h2 class="section-title">こんなチームに最適</h2>
+    <p class="section-subtitle">ADOS は「コードを書く」だけでなく「開発チームを回す」プラットフォームです</p>
+    <div class="usecases-grid">
+      <div class="usecase">
+        <div class="usecase-emoji">🔥</div>
+        <h3>深夜の障害対応</h3>
+        <p>SRE Agent がエラー率の急上昇を検知 → 原因を特定 → 修復 PR を自動生成。エンジニアが起きる前に修正が準備されている世界。</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-emoji">🔄</div>
+        <h3>CI が壊れたまま放置</h3>
+        <p>Pipeline Watcher が CI/CD の失敗を常時監視。テストの修正から依存関係の更新まで、放置されがちな問題を AI が即座に修復。</p>
+      </div>
+      <div class="usecase">
+        <div class="usecase-emoji">📋</div>
+        <h3>技術的負債の可視化</h3>
+        <p>AI がリポジトリ全体を分析し、改善点をバックログとして Issue 化。「やらなきゃいけないけど手が回らない」を解消。</p>
       </div>
     </div>
   </section>
@@ -565,6 +837,38 @@
         </ul>
         <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">Team にアップグレード</a>
       </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <h2 class="section-title">よくある質問</h2>
+    <p class="section-subtitle">導入前に気になるポイントをまとめました</p>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>GitHub Copilot Coding Agent とは何が違いますか？</summary>
+        <p>Copilot Coding Agent は「Issue を受けてコードを書く 1 人のジュニア開発者」です。ADOS は Copilot を含む複数の AI を束ねて「チーム全体の開発運用を自律的に回す」プラットフォームです。SRE 監視、CI/CD 自動修復、バックログ自動生成、AutoPilot による自律改善など、Copilot にはない機能を多数搭載しています。</p>
+      </details>
+      <details class="faq-item">
+        <summary>GitHub 以外の VCS でも使えますか？</summary>
+        <p>はい。GitHub、GitLab、Bitbucket に対応しています。既存のソース管理を変えることなく導入可能です。</p>
+      </details>
+      <details class="faq-item">
+        <summary>自社のインフラで動かせますか？</summary>
+        <p>はい。セルフホスト Docker Runner を使えば、自社のオンプレミス環境やプライベートクラウドで AI エージェントを実行できます。コードが外部に出ることはありません。</p>
+      </details>
+      <details class="faq-item">
+        <summary>AutoPilot とは何ですか？</summary>
+        <p>AutoPilot は ADOS の自律改善モードです。有効にすると、AI がリポジトリのコードを定期的に分析し、改善項目を自動で Issue 化・実装します。人間は承認するだけで、リポジトリが継続的に改善されていきます。</p>
+      </details>
+      <details class="faq-item">
+        <summary>どの AI エージェントが使われるか選べますか？</summary>
+        <p>はい。Issue の複雑さに応じた自動選択のほか、手動で指定することも可能です。Copilot CLI、Claude Code、Codex に対応しています。</p>
+      </details>
+      <details class="faq-item">
+        <summary>セキュリティは大丈夫ですか？</summary>
+        <p>セルフホスト Runner によりコードが外部に出ることはありません。また、全ワークフローに Plan → Approval → Implement の承認ゲートを設定でき、AI が勝手にデプロイすることはありません。</p>
+      </details>
     </div>
   </section>
 
