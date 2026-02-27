@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADOS — AI DevOps Agent | GitHub Issue を AI が自動で解決</title>
+  <meta name="description" content="ADOS は GitHub Issue を AI エージェントが自動で解決し、Pull Request を作成する AI DevOps プラットフォームです。Copilot・Claude・Codex に対応。">
+  <meta name="keywords" content="AI DevOps, GitHub, Issue, Pull Request, AI Agent, Copilot, Claude, Codex, 自動化, CI/CD">
+  <meta property="og:title" content="ADOS — AI DevOps Agent">
+  <meta property="og:description" content="GitHub Issue を AI が自動で解決。コードを書いて PR を作成します。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ados.dev">
+  <meta property="og:image" content="https://ados.dev/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ADOS — AI DevOps Agent">
+  <meta name="twitter:description" content="GitHub Issue を AI が自動で解決。コードを書いて PR を作成します。">
+  <meta name="twitter:image" content="https://ados.dev/og-image.png">
+  <link rel="canonical" href="https://ados.dev">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a1a;
+      --bg-card: #111127;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #7c3aed;
+      --accent-light: #a78bfa;
+      --green: #22c55e;
+      --blue: #3b82f6;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(20px);
+      background: rgba(10,10,26,0.8);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+    .nav-logo span { color: var(--accent-light); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff !important;
+      padding: 0.5rem 1.25rem; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: #6d28d9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(124,58,237,0.3); }
+    .nav-hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      width: 32px; height: 32px; position: relative;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px; background: var(--text);
+      position: absolute; left: 5px; transition: all 0.3s;
+    }
+    .nav-hamburger span:nth-child(1) { top: 9px; }
+    .nav-hamburger span:nth-child(2) { top: 15px; }
+    .nav-hamburger span:nth-child(3) { top: 21px; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 10rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 50px; padding: 0.35rem 1rem;
+      font-size: 0.8rem; color: var(--accent-light); font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900; letter-spacing: -0.03em;
+      line-height: 1.1; margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-light));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.2rem; color: var(--text-muted);
+      max-width: 640px; margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      color: #fff; padding: 0.85rem 2rem; border-radius: 10px;
+      font-weight: 700; font-size: 1.05rem; text-decoration: none;
+      transition: all 0.2s; border: none; cursor: pointer;
+      display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(124,58,237,0.4); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      padding: 0.85rem 2rem; border-radius: 10px;
+      font-weight: 600; font-size: 1.05rem; text-decoration: none;
+      border: 1px solid var(--border); transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-secondary:hover { border-color: var(--accent-light); color: var(--accent-light); }
+
+    /* ── Demo ── */
+    .demo {
+      max-width: 900px; margin: 0 auto 6rem; padding: 0 2rem;
+    }
+    .demo-window {
+      background: #0d1117; border: 1px solid #30363d;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    .demo-titlebar {
+      background: #161b22; padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid #30363d;
+    }
+    .demo-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .demo-dot:nth-child(1) { background: #ff5f57; }
+    .demo-dot:nth-child(2) { background: #febc2e; }
+    .demo-dot:nth-child(3) { background: #28c840; }
+    .demo-code {
+      padding: 1.5rem; font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem; line-height: 1.8; overflow-x: auto;
+    }
+    .demo-code .comment { color: #8b949e; }
+    .demo-code .keyword { color: #ff7b72; }
+    .demo-code .string { color: #a5d6ff; }
+    .demo-code .func { color: #d2a8ff; }
+    .demo-code .label { color: #7ee787; }
+
+    /* ── How It Works ── */
+    .how-it-works {
+      max-width: 1000px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .section-title {
+      text-align: center; font-size: 2.25rem; font-weight: 800;
+      margin-bottom: 1rem; letter-spacing: -0.02em;
+    }
+    .section-subtitle {
+      text-align: center; color: var(--text-muted);
+      font-size: 1.1rem; margin-bottom: 4rem; max-width: 600px; margin-left: auto; margin-right: auto;
+    }
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    }
+    .step {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      text-align: center; transition: all 0.3s;
+    }
+    .step:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .step-num {
+      width: 48px; height: 48px; margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, var(--accent), #4f46e5);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: #fff;
+    }
+    .step h3 { font-size: 1.15rem; margin-bottom: 0.75rem; font-weight: 700; }
+    .step p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── Features ── */
+    .features {
+      max-width: 1200px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .feature {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem;
+      transition: all 0.3s;
+    }
+    .feature:hover { border-color: var(--accent); }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; }
+
+    /* ── Pricing ── */
+    .pricing {
+      max-width: 1100px; margin: 0 auto; padding: 6rem 2rem;
+    }
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .price-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      display: flex; flex-direction: column;
+      transition: all 0.3s;
+    }
+    .price-card.popular {
+      border-color: var(--accent);
+      box-shadow: 0 0 30px rgba(124,58,237,0.15);
+      position: relative;
+    }
+    .price-card.popular::before {
+      content: '人気'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: #fff; padding: 4px 16px;
+      border-radius: 20px; font-size: 0.75rem; font-weight: 700;
+    }
+    .price-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .price-amount {
+      font-size: 2.5rem; font-weight: 900; margin-bottom: 0.25rem;
+    }
+    .price-note { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .price-features { list-style: none; flex: 1; margin-bottom: 1.5rem; }
+    .price-features li {
+      padding: 0.4rem 0; font-size: 0.875rem; color: var(--text-muted);
+    }
+    .price-features li::before { content: '✓ '; color: var(--green); font-weight: 700; }
+    .price-cta {
+      display: block; text-align: center;
+      padding: 0.75rem; border-radius: 10px;
+      font-weight: 600; font-size: 0.95rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .price-cta-primary {
+      background: var(--accent); color: #fff;
+    }
+    .price-cta-primary:hover { background: #6d28d9; }
+    .price-cta-secondary {
+      background: rgba(255,255,255,0.05); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .price-cta-secondary:hover { border-color: var(--accent-light); }
+
+    /* ── Agents ── */
+    .agents {
+      max-width: 1000px; margin: 0 auto; padding: 4rem 2rem;
+      text-align: center;
+    }
+    .agents-logos {
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .agent-logo {
+      display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+    }
+    .agent-logo-icon {
+      width: 64px; height: 64px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+    }
+    .agent-logo-name { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center; padding: 6rem 2rem;
+      position: relative;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .cta-section p {
+      color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem;
+    }
+    .cta-email-signup {
+      margin-top: 2rem;
+    }
+    .cta-email-label {
+      color: #a5b4fc; font-size: 0.9rem; margin-bottom: 0.75rem;
+    }
+    .cta-email-form {
+      display: flex; gap: 0.5rem; max-width: 420px; margin: 0 auto;
+    }
+    .cta-email-input {
+      flex: 1; padding: 0.75rem 1rem; border-radius: 8px;
+      border: 1px solid rgba(124,58,237,0.3);
+      background: rgba(255,255,255,0.06); color: #fff;
+      font-size: 0.9rem; outline: none;
+      font-family: inherit;
+    }
+    .cta-email-input:focus { border-color: var(--accent); }
+    .cta-email-btn {
+      padding: 0.75rem 1.25rem; border-radius: 8px; border: none;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: #fff; font-weight: 700; cursor: pointer;
+      white-space: nowrap; font-size: 0.9rem;
+      font-family: inherit; transition: all 0.2s;
+    }
+    .cta-email-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(124,58,237,0.3); }
+    .cta-email-success {
+      display: none; color: #10b981; margin-top: 0.5rem; font-size: 0.85rem;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { color: var(--text-muted); font-size: 0.85rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .steps { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: block; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: absolute; top: 64px; left: 0; right: 0;
+        background: rgba(10,10,26,0.95); backdrop-filter: blur(20px);
+        padding: 1.5rem 2rem; gap: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .hero h1 { font-size: 2.25rem; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+      .cta-email-form { flex-direction: column; }
+      .agents-logos { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">ADOS<span>.</span></a>
+      <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="メニュー">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="#how-it-works">仕組み</a>
+        <a href="#features">機能</a>
+        <a href="#pricing">料金</a>
+        <a href="https://github.com/1cll/ados" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://ados-platform-dashboard.web.app" class="nav-cta">ダッシュボードへ →</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">🚀 オープンソース AI DevOps プラットフォーム</div>
+    <h1>GitHub Issue を<br>AI が自動で解決</h1>
+    <p>Issue にラベルを付けるだけ。AI エージェントがコードを読み、実装し、Pull Request を作成します。<br>あなたはレビューするだけ。</p>
+    <div class="hero-actions">
+      <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル</a>
+      <a href="https://github.com/1cll/ados" class="btn-secondary" target="_blank" rel="noopener">⭐ GitHub で見る</a>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="demo">
+    <div class="demo-window">
+      <div class="demo-titlebar">
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+        <span class="demo-dot"></span>
+      </div>
+      <pre class="demo-code">
+<span class="comment"># 1. Issue を作成 (ラベル付き)</span>
+<span class="keyword">gh issue create</span> <span class="string">--title "ユーザー認証にレート制限を追加"</span> \
+  <span class="string">--label</span> <span class="label">"ados"</span>
+
+<span class="comment"># 2. ADOS が自動検知 → AI エージェントが実装開始</span>
+<span class="func">🤖 ADOS Agent:</span> Issue #42 を検知
+  → リポジトリを解析中...
+  → <span class="string">internal/api/auth.go</span> にレート制限ミドルウェアを追加
+  → テスト作成・実行: <span class="label">PASS</span>
+  → Pull Request <span class="label">#43</span> を作成しました ✅
+
+<span class="comment"># 3. あなたがレビュー → マージ</span>
+<span class="keyword">gh pr merge</span> <span class="string">43</span> <span class="string">--squash</span>
+      </pre>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works" id="how-it-works">
+    <h2 class="section-title">3 ステップで自動化</h2>
+    <p class="section-subtitle">ADOS はあなたの GitHub リポジトリと連携し、Issue を自動で解決します。</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>リポジトリを接続</h3>
+        <p>GitHub と連携するだけ。リポジトリの設定・ラベルをカスタマイズできます。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Issue を登録</h3>
+        <p>通常どおり Issue を作成し、ADOS ラベルを付与。AI が自動で解析を開始します。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>PR をレビュー</h3>
+        <p>AI がコードを実装して PR を作成。あなたはレビューしてマージするだけ。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <h2 class="section-title">主な機能</h2>
+    <p class="section-subtitle">開発チームの生産性を 10x にする機能群</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <h3>マルチ AI エージェント</h3>
+        <p>GitHub Copilot、Claude、Codex を Issue の複雑さに応じて自動選択。最適なエージェントが担当します。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔄</div>
+        <h3>パイプライン自動修復</h3>
+        <p>CI/CD の失敗を自動検知し、修復 PR を作成。ビルドが壊れていても放置しません。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📊</div>
+        <h3>ダッシュボード</h3>
+        <p>ジョブの統計、成功率、トレンド、エージェント別パフォーマンスをリアルタイムで可視化。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🖥️</div>
+        <h3>セルフホスト Runner</h3>
+        <p>自前の Docker 環境で AI エージェントを実行。クラウドコストを大幅に削減できます。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔀</div>
+        <h3>ワークフロー</h3>
+        <p>Plan → Approval → Implement → Review の 4 段階ワークフロー。人間のレビューをゲートに設定可能。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">💬</div>
+        <h3>Agentic Chat</h3>
+        <p>ブラウザから直接 AI エージェントとチャット。リポジトリのコンテキストを理解した会話が可能。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📡</div>
+        <h3>SRE 運用監視</h3>
+        <p>GitHub Actions の失敗パターンを監視し、自動で Issue を作成。インシデント対応を高速化。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧠</div>
+        <h3>AI バックログ</h3>
+        <p>リポジトリを AI が分析し、改善 Issue のバックログを自動生成。技術的負債を可視化。</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🔒</div>
+        <h3>マルチ VCS 対応</h3>
+        <p>GitHub、GitLab、Bitbucket に対応。既存のワークフローを変えずに導入できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Agents -->
+  <section class="agents">
+    <h2 class="section-title">対応 AI エージェント</h2>
+    <p class="section-subtitle">Issue の難易度に応じて最適なエージェントを自動選択</p>
+    <div class="agents-logos">
+      <div class="agent-logo">
+        <div class="agent-logo-icon">🐙</div>
+        <span class="agent-logo-name">GitHub Copilot</span>
+      </div>
+      <div class="agent-logo">
+        <div class="agent-logo-icon">🧠</div>
+        <span class="agent-logo-name">Claude (Anthropic)</span>
+      </div>
+      <div class="agent-logo">
+        <div class="agent-logo-icon">🔮</div>
+        <span class="agent-logo-name">Codex (OpenAI)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <h2 class="section-title">料金プラン</h2>
+    <p class="section-subtitle">小さく始めて、チームの成長に合わせてスケール</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>Free</h3>
+        <div class="price-amount">¥0</div>
+        <div class="price-note">ずっと無料</div>
+        <ul class="price-features">
+          <li>1 リポジトリ</li>
+          <li>20 Issue / 月</li>
+          <li>Copilot エージェント</li>
+          <li>コミュニティサポート</li>
+        </ul>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">🎁 14日間無料トライアル</a>
+      </div>
+      <div class="price-card popular">
+        <h3>Pro</h3>
+        <div class="price-amount">¥4,980</div>
+        <div class="price-note">/月</div>
+        <ul class="price-features">
+          <li>5 リポジトリ</li>
+          <li>Issue 処理 無制限</li>
+          <li>Copilot + Claude エージェント</li>
+          <li>SRE 運用監視</li>
+          <li>ワークフロー</li>
+          <li>優先サポート</li>
+        </ul>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-primary">Pro にアップグレード</a>
+      </div>
+      <div class="price-card">
+        <h3>Team</h3>
+        <div class="price-amount">¥14,980</div>
+        <div class="price-note">/シート/月</div>
+        <ul class="price-features">
+          <li>リポジトリ 無制限</li>
+          <li>Issue 処理 無制限</li>
+          <li>AI エージェント 無制限</li>
+          <li>SRE 運用監視</li>
+          <li>監査ログ</li>
+          <li>専任サポート</li>
+        </ul>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">Team にアップグレード</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>今すぐ始めよう</h2>
+    <p>14日間の Pro トライアル付き。クレジットカード不要。</p>
+    <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル →</a>
+    <div class="cta-email-signup">
+      <p class="cta-email-label">📬 最新情報・リリースノートをメールでお届け</p>
+      <form id="email-form" class="cta-email-form" onsubmit="handleEmailSignup(event)">
+        <input type="email" id="signup-email" placeholder="your@email.com" required class="cta-email-input">
+        <button type="submit" class="cta-email-btn">登録</button>
+      </form>
+      <div id="email-success" class="cta-email-success">✅ 登録ありがとうございます！</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 ADOS. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="https://github.com/1cll/ados" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/1cll/ados/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+        <a href="mailto:support@ados.dev">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  function handleEmailSignup(e) {
+    e.preventDefault();
+    var email = document.getElementById('signup-email').value;
+    var emails = JSON.parse(localStorage.getItem('ados_signups') || '[]');
+    emails.push({ email: email, timestamp: new Date().toISOString() });
+    localStorage.setItem('ados_signups', JSON.stringify(emails));
+    document.getElementById('email-form').style.display = 'none';
+    document.getElementById('email-success').style.display = 'block';
+  }
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.remove('open');
+    });
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+  </script>
+
+</body>
+</html>
