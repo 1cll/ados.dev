@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ADOS — AI DevOps Platform | 開発を止めない AI DevOps チーム</title>
-  <meta name="description" content="ADOS は Issue 解決・CI/CD 修復・SRE 監視・自律改善を AI が 24/7 で回す DevOps プラットフォーム。Copilot を内包し、その先へ。">
-  <meta name="keywords" content="AI DevOps, GitHub, GitLab, Bitbucket, Issue, Pull Request, AI Agent, Copilot, Claude, Codex, 自動化, CI/CD, SRE, AutoPilot">
+  <title>ADOS — AI DevOps Platform | AI DevOps Team That Never Stops</title>
+  <meta name="description" content="ADOS is an AI DevOps platform that autonomously runs issue resolution, CI/CD repair, SRE monitoring, and continuous improvement 24/7. Beyond Copilot.">
+  <meta name="keywords" content="AI DevOps, GitHub, GitLab, Bitbucket, Issue, Pull Request, AI Agent, Copilot, Claude, Codex, Automation, CI/CD, SRE, AutoPilot">
   <meta property="og:title" content="ADOS — AI DevOps Platform">
-  <meta property="og:description" content="Copilot はコードを書く。ADOS はチームを回す。Issue 解決から SRE 監視まで、AI が DevOps を自律的に運用。">
+  <meta property="og:description" content="Copilot writes code. ADOS runs your team. From issue resolution to SRE monitoring, AI autonomously operates your DevOps.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ados.dev">
   <meta property="og:image" content="https://ados.dev/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ADOS — AI DevOps Platform">
-  <meta name="twitter:description" content="Copilot はコードを書く。ADOS はチームを回す。Issue 解決から SRE 監視まで、AI が DevOps を自律的に運用。">
+  <meta name="twitter:description" content="Copilot writes code. ADOS runs your team. From issue resolution to SRE monitoring, AI autonomously operates your DevOps.">
   <meta name="twitter:image" content="https://ados.dev/og-image.png">
   <link rel="canonical" href="https://ados.dev">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
@@ -38,7 +38,6 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -82,9 +81,7 @@
       opacity: 0; transform: translateY(40px);
       transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal.visible {
-      opacity: 1; transform: translateY(0);
-    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
     .reveal-delay-1 { transition-delay: 0.1s; }
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
@@ -121,13 +118,13 @@
       transition: color 0.2s; position: relative;
     }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a:not(.nav-cta)::after {
+    .nav-links a:not(.nav-cta):not(.lang-btn)::after {
       content: ''; position: absolute; bottom: -4px; left: 0;
       width: 0; height: 2px;
       background: var(--accent); border-radius: 1px;
       transition: width 0.3s;
     }
-    .nav-links a:not(.nav-cta):hover::after { width: 100%; }
+    .nav-links a:not(.nav-cta):not(.lang-btn):hover::after { width: 100%; }
     .nav-cta {
       background: linear-gradient(135deg, var(--accent), #6d28d9);
       color: #fff !important;
@@ -155,6 +152,82 @@
     .nav-hamburger span:nth-child(1) { top: 9px; }
     .nav-hamburger span:nth-child(2) { top: 15px; }
     .nav-hamburger span:nth-child(3) { top: 21px; }
+
+    /* ── Language Switcher ── */
+    .lang-switcher {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .lang-switcher-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .lang-switcher-btn:hover {
+      border-color: var(--accent-light);
+      color: var(--text);
+      background: rgba(124,58,237,0.1);
+    }
+    .lang-switcher-btn .arrow {
+      font-size: 0.6rem;
+      transition: transform 0.2s;
+    }
+    .lang-switcher.open .lang-switcher-btn .arrow {
+      transform: rotate(180deg);
+    }
+    .lang-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.5rem;
+      min-width: 140px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      z-index: 200;
+    }
+    .lang-switcher.open .lang-dropdown {
+      display: block;
+    }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: none;
+      width: 100%;
+      font-family: inherit;
+    }
+    .lang-option:hover {
+      background: rgba(124,58,237,0.12);
+      color: var(--text);
+    }
+    .lang-option.active {
+      color: var(--accent-light);
+      background: rgba(124,58,237,0.08);
+    }
+    .lang-option .flag {
+      font-size: 1.1rem;
+    }
 
     /* ── Hero ── */
     .hero {
@@ -654,8 +727,8 @@
       border-color: var(--accent);
       box-shadow: 0 0 40px rgba(124,58,237,0.12);
     }
-    .price-card.popular::before {
-      content: '人気'; position: absolute; top: 16px; right: -30px;
+    .price-popular-badge {
+      position: absolute; top: 16px; right: -30px;
       background: linear-gradient(135deg, var(--accent), #6d28d9);
       color: #fff; padding: 4px 36px;
       font-size: 0.7rem; font-weight: 700;
@@ -826,6 +899,7 @@
       .footer-inner { flex-direction: column; text-align: center; }
       .section-title { font-size: 2rem; }
       .cta-section h2 { font-size: 2.25rem; }
+      .lang-switcher { margin-top: 0.5rem; }
     }
     @media (max-width: 480px) {
       .hero-actions { flex-direction: column; align-items: center; }
@@ -844,17 +918,35 @@
   <nav class="nav" id="nav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">ADOS<span>.</span></a>
-      <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="メニュー">
+      <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="#comparison">比較</a>
-        <a href="#how-it-works">仕組み</a>
-        <a href="#features">機能</a>
-        <a href="#pricing">料金</a>
+        <a href="#comparison" data-i18n="nav.comparison">Comparison</a>
+        <a href="#how-it-works" data-i18n="nav.how">How It Works</a>
+        <a href="#features" data-i18n="nav.features">Features</a>
+        <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
         <a href="#faq">FAQ</a>
-        <a href="https://docs.ados.dev" target="_blank" rel="noopener">ドキュメント</a>
-        <a href="https://ados-platform-dashboard.web.app" class="nav-cta">無料で始める →</a>
+        <a href="https://docs.ados.dev" target="_blank" rel="noopener" data-i18n="nav.docs">Docs</a>
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-switcher-btn" onclick="toggleLangMenu(event)">
+            <span class="flag" id="current-flag">🇺🇸</span>
+            <span id="current-lang">EN</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div class="lang-dropdown">
+            <button class="lang-option active" data-lang="en" onclick="switchLang('en')">
+              <span class="flag">🇺🇸</span> English
+            </button>
+            <button class="lang-option" data-lang="ja" onclick="switchLang('ja')">
+              <span class="flag">🇯🇵</span> 日本語
+            </button>
+            <button class="lang-option" data-lang="ru" onclick="switchLang('ru')">
+              <span class="flag">🇷🇺</span> Русский
+            </button>
+          </div>
+        </div>
+        <a href="https://ados-platform-dashboard.web.app" class="nav-cta" data-i18n="nav.cta">Get Started Free →</a>
       </div>
     </div>
   </nav>
@@ -866,12 +958,12 @@
     <div class="hero-orb hero-orb-2"></div>
     <div class="hero-orb hero-orb-3"></div>
     <div class="hero-content">
-      <div class="hero-badge"><span class="pulse"></span> Copilot を内包し、その先へ</div>
-      <h1>開発を止めない<br>AI DevOps チーム</h1>
-      <p>Issue 解決、CI/CD 修復、SRE 監視、自律改善 ——<br>AI が DevOps チーム全体を 24/7 で回す。あなたはレビューするだけ。</p>
+      <div class="hero-badge"><span class="pulse"></span> <span data-i18n="hero.badge">Beyond Copilot</span></div>
+      <h1 data-i18n-html="hero.title">AI DevOps Team<br>That Never Stops</h1>
+      <p data-i18n-html="hero.desc">Issue resolution, CI/CD repair, SRE monitoring, autonomous improvement —<br>AI runs your entire DevOps team 24/7. You just review.</p>
       <div class="hero-actions">
-        <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル</a>
-        <a href="#comparison" class="btn-secondary">📊 Copilot と比較する</a>
+        <a href="https://ados-platform-dashboard.web.app" class="btn-primary" data-i18n="hero.cta1">🎁 14-Day Free Trial</a>
+        <a href="#comparison" class="btn-secondary" data-i18n="hero.cta2">📊 Compare with Copilot</a>
       </div>
       <div class="hero-stats">
         <div class="hero-stat">
@@ -884,7 +976,7 @@
         </div>
         <div class="hero-stat">
           <div class="hero-stat-value">24/7</div>
-          <div class="hero-stat-label">自律運用</div>
+          <div class="hero-stat-label" data-i18n="hero.stat3">Autonomous Ops</div>
         </div>
       </div>
     </div>
@@ -897,7 +989,7 @@
         <span class="demo-dot"></span>
         <span class="demo-dot"></span>
         <span class="demo-dot"></span>
-        <span class="demo-titlebar-title">ADOS — ターミナル</span>
+        <span class="demo-titlebar-title" data-i18n="demo.title">ADOS — Terminal</span>
       </div>
       <pre class="demo-code" id="demo-terminal"><span class="typing-cursor" id="demo-cursor"></span></pre>
     </div>
@@ -905,52 +997,52 @@
 
   <!-- Comparison -->
   <section class="comparison reveal" id="comparison">
-    <h2 class="section-title">Copilot Coding Agent との違い</h2>
-    <p class="section-subtitle">Copilot は「コードを書く AI」。ADOS は Copilot を内包し、<br>DevOps チーム全体を回すプラットフォームです。</p>
+    <h2 class="section-title" data-i18n="comp.title">How ADOS Differs from Copilot</h2>
+    <p class="section-subtitle" data-i18n-html="comp.subtitle">Copilot is "an AI that writes code." ADOS embeds Copilot<br>and runs your entire DevOps team as a platform.</p>
     <div class="comparison-table-wrap reveal reveal-delay-1">
       <table class="comparison-table">
         <thead>
           <tr>
             <th></th>
-            <th>GitHub Copilot<br>Coding Agent</th>
+            <th data-i18n-html="comp.th_copilot">GitHub Copilot<br>Coding Agent</th>
             <th class="ados-col">ADOS</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Issue → PR 自動生成</td><td>✅</td><td class="ados-col">✅</td></tr>
-          <tr><td>対応 VCS</td><td>GitHub のみ</td><td class="ados-col">GitHub / GitLab / Bitbucket</td></tr>
-          <tr><td>AI エージェント</td><td>Copilot のみ</td><td class="ados-col">Copilot + Claude + Codex 自動選択</td></tr>
-          <tr><td>CI/CD 失敗の自動修復</td><td>同一 PR 内のみ</td><td class="ados-col">全パイプラインを常時監視・修復</td></tr>
-          <tr><td>SRE 運用監視</td><td>—</td><td class="ados-col">エラー率・レイテンシ・OOM を監視</td></tr>
-          <tr><td>AutoPilot（自律改善）</td><td>—</td><td class="ados-col">リポジトリを自律的に改善し続ける</td></tr>
-          <tr><td>AI バックログ生成</td><td>—</td><td class="ados-col">技術的負債を AI が分析・Issue 化</td></tr>
-          <tr><td>セルフホスト実行</td><td>—</td><td class="ados-col">Docker Runner でオンプレ実行可能</td></tr>
-          <tr><td>複数リポジトリ横断</td><td>1 リポジトリ単位</td><td class="ados-col">組織全体を一元管理</td></tr>
+          <tr><td data-i18n="comp.r1">Issue → PR auto-generation</td><td>✅</td><td class="ados-col">✅</td></tr>
+          <tr><td data-i18n="comp.r2">Supported VCS</td><td data-i18n="comp.r2_cop">GitHub only</td><td class="ados-col">GitHub / GitLab / Bitbucket</td></tr>
+          <tr><td data-i18n="comp.r3">AI Agents</td><td data-i18n="comp.r3_cop">Copilot only</td><td class="ados-col" data-i18n="comp.r3_ados">Copilot + Claude + Codex auto-select</td></tr>
+          <tr><td data-i18n="comp.r4">CI/CD failure auto-repair</td><td data-i18n="comp.r4_cop">Same PR only</td><td class="ados-col" data-i18n="comp.r4_ados">Monitors & fixes all pipelines</td></tr>
+          <tr><td data-i18n="comp.r5">SRE monitoring</td><td>—</td><td class="ados-col" data-i18n="comp.r5_ados">Error rate, latency, OOM monitoring</td></tr>
+          <tr><td data-i18n="comp.r6">AutoPilot (autonomous improvement)</td><td>—</td><td class="ados-col" data-i18n="comp.r6_ados">Autonomously improves repositories</td></tr>
+          <tr><td data-i18n="comp.r7">AI backlog generation</td><td>—</td><td class="ados-col" data-i18n="comp.r7_ados">AI analyzes tech debt → creates Issues</td></tr>
+          <tr><td data-i18n="comp.r8">Self-hosted execution</td><td>—</td><td class="ados-col" data-i18n="comp.r8_ados">On-premise via Docker Runner</td></tr>
+          <tr><td data-i18n="comp.r9">Cross-repository</td><td data-i18n="comp.r9_cop">Per repository</td><td class="ados-col" data-i18n="comp.r9_ados">Manage entire organization</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="comparison-note reveal reveal-delay-2">💡 ADOS は Copilot を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。</p>
+    <p class="comparison-note reveal reveal-delay-2" data-i18n-html="comp.note">💡 ADOS embeds Copilot as one of its AI agents.<br>Not a competitor — <strong>a platform to maximize Copilot</strong>.</p>
   </section>
 
   <!-- How It Works -->
   <section class="how-it-works" id="how-it-works">
-    <h2 class="section-title reveal">3 ステップで自動化</h2>
-    <p class="section-subtitle reveal">ADOS はあなたのリポジトリと連携し、Issue を自動で解決します。</p>
+    <h2 class="section-title reveal" data-i18n="how.title">Automate in 3 Steps</h2>
+    <p class="section-subtitle reveal" data-i18n="how.subtitle">ADOS connects to your repositories and resolves issues automatically.</p>
     <div class="steps">
       <div class="step reveal reveal-delay-1">
         <div class="step-num">1</div>
-        <h3>リポジトリを接続</h3>
-        <p>GitHub / GitLab / Bitbucket と連携。設定・ラベルをカスタマイズ。</p>
+        <h3 data-i18n="how.s1_title">Connect Your Repo</h3>
+        <p data-i18n="how.s1_desc">Link GitHub / GitLab / Bitbucket. Customize settings & labels.</p>
       </div>
       <div class="step reveal reveal-delay-2">
         <div class="step-num">2</div>
-        <h3>Issue を登録</h3>
-        <p>通常どおり Issue を作成し、ADOS ラベルを付与。AI が自動で解析を開始。</p>
+        <h3 data-i18n="how.s2_title">Create an Issue</h3>
+        <p data-i18n="how.s2_desc">Create issues as usual, add the ADOS label. AI starts analysis automatically.</p>
       </div>
       <div class="step reveal reveal-delay-3">
         <div class="step-num">3</div>
-        <h3>PR をレビュー</h3>
-        <p>AI がコードを実装して PR を作成。あなたはレビューしてマージするだけ。</p>
+        <h3 data-i18n="how.s3_title">Review the PR</h3>
+        <p data-i18n="how.s3_desc">AI implements the code and creates a PR. You just review and merge.</p>
       </div>
     </div>
   </section>
@@ -958,7 +1050,7 @@
   <!-- Closed-Loop DevOps -->
   <section class="closed-loop">
     <h2 class="section-title reveal">Closed-Loop DevOps</h2>
-    <p class="section-subtitle reveal">「監視 → 検知 → 修復 → デプロイ」の完全自律ループ。<br>人間が寝ている間も、AI がプロダクトを守り続けます。</p>
+    <p class="section-subtitle reveal" data-i18n-html="loop.subtitle">A fully autonomous loop: Monitor → Detect → Fix → Deploy.<br>While you sleep, AI keeps your product running.</p>
     <div class="loop-visual reveal">
       <svg class="loop-svg" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
         <defs>
@@ -987,162 +1079,162 @@
       </div>
       <div class="loop-node loop-node-1">
         <div class="loop-node-icon">📡</div>
-        <div class="loop-node-label">監視</div>
-        <div class="loop-node-desc">SRE Agent が<br>常時モニタリング</div>
+        <div class="loop-node-label" data-i18n="loop.n1_label">Monitor</div>
+        <div class="loop-node-desc" data-i18n-html="loop.n1_desc">SRE Agent<br>24/7 monitoring</div>
       </div>
       <div class="loop-node loop-node-2">
         <div class="loop-node-icon">🚨</div>
-        <div class="loop-node-label">検知 &amp; Issue 化</div>
-        <div class="loop-node-desc">閾値超過を自動検知<br>Issue を自動生成</div>
+        <div class="loop-node-label" data-i18n="loop.n2_label">Detect &amp; Issue</div>
+        <div class="loop-node-desc" data-i18n-html="loop.n2_desc">Auto-detect anomalies<br>Auto-create Issues</div>
       </div>
       <div class="loop-node loop-node-3">
         <div class="loop-node-icon">🤖</div>
-        <div class="loop-node-label">AI 修復</div>
-        <div class="loop-node-desc">最適 AI Agent が<br>修復 PR を作成</div>
+        <div class="loop-node-label" data-i18n="loop.n3_label">AI Repair</div>
+        <div class="loop-node-desc" data-i18n-html="loop.n3_desc">Best AI Agent<br>creates fix PR</div>
       </div>
       <div class="loop-node loop-node-4">
         <div class="loop-node-icon">✅</div>
-        <div class="loop-node-label">デプロイ</div>
-        <div class="loop-node-desc">マージ → CI/CD<br>自動デプロイ</div>
+        <div class="loop-node-label" data-i18n="loop.n4_label">Deploy</div>
+        <div class="loop-node-desc" data-i18n-html="loop.n4_desc">Merge → CI/CD<br>Auto deploy</div>
       </div>
     </div>
-    <p class="loop-caption reveal">Copilot は <em>Issue → PR</em> だけ。ADOS は<em>全ループを自律運用</em>します。</p>
+    <p class="loop-caption reveal" data-i18n-html="loop.caption">Copilot only handles <em>Issue → PR</em>. ADOS <em>runs the entire loop autonomously</em>.</p>
   </section>
 
   <!-- Features -->
   <section class="features" id="features">
-    <h2 class="section-title reveal">主な機能</h2>
-    <p class="section-subtitle reveal">開発チームの生産性を 10x にする機能群</p>
+    <h2 class="section-title reveal" data-i18n="feat.title">Key Features</h2>
+    <p class="section-subtitle reveal" data-i18n="feat.subtitle">A feature set that 10x your development team's productivity</p>
     <div class="features-grid">
       <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">🤖</div>
-        <h3>マルチ AI エージェント</h3>
-        <p>Copilot、Claude、Codex を Issue の複雑さに応じて自動選択。フォールバック付きで失敗しても止まりません。</p>
-        <span class="feature-tag">Copilot にはない</span>
+        <h3 data-i18n="feat.f1_title">Multi-AI Agents</h3>
+        <p data-i18n="feat.f1_desc">Auto-selects Copilot, Claude, or Codex based on issue complexity. Fallback support ensures it never stops.</p>
+        <span class="feature-tag" data-i18n="feat.tag_not_copilot">Not in Copilot</span>
       </div>
       <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🔄</div>
-        <h3>パイプライン自動修復</h3>
-        <p>CI/CD の失敗を自動検知し、修復 PR を作成。ビルドが壊れていても深夜でも、放置しません。</p>
-        <span class="feature-tag">24/7 自動</span>
+        <h3 data-i18n="feat.f2_title">Pipeline Auto-Repair</h3>
+        <p data-i18n="feat.f2_desc">Automatically detects CI/CD failures and creates fix PRs. Day or night, broken builds won't be ignored.</p>
+        <span class="feature-tag" data-i18n="feat.tag_247">24/7 Auto</span>
       </div>
       <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">📊</div>
-        <h3>ダッシュボード</h3>
-        <p>ジョブ統計、成功率、トレンド、エージェント別パフォーマンスをリアルタイムで可視化。</p>
+        <h3 data-i18n="feat.f3_title">Dashboard</h3>
+        <p data-i18n="feat.f3_desc">Real-time visualization of job stats, success rates, trends, and per-agent performance.</p>
       </div>
       <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">🖥️</div>
-        <h3>セルフホスト Runner</h3>
-        <p>Docker 環境で AI エージェントをオンプレ実行。コードが外部に出ることはありません。</p>
-        <span class="feature-tag">セキュア</span>
+        <h3 data-i18n="feat.f4_title">Self-Hosted Runner</h3>
+        <p data-i18n="feat.f4_desc">Run AI agents on-premise in Docker. Your code never leaves your infrastructure.</p>
+        <span class="feature-tag" data-i18n="feat.tag_secure">Secure</span>
       </div>
       <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🔀</div>
-        <h3>ワークフロー</h3>
-        <p>Plan → Approval → Implement → Review の 4 段階。人間のレビューをゲートに設定可能。</p>
+        <h3 data-i18n="feat.f5_title">Workflows</h3>
+        <p data-i18n="feat.f5_desc">4-stage pipeline: Plan → Approval → Implement → Review. Set human review as a gate.</p>
       </div>
       <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">💬</div>
-        <h3>Agentic Chat</h3>
-        <p>ブラウザから AI エージェントとチャット。リポジトリのコンテキストを理解した会話が可能。</p>
+        <h3 data-i18n="feat.f6_title">Agentic Chat</h3>
+        <p data-i18n="feat.f6_desc">Chat with AI agents from your browser. Context-aware conversations with your repository.</p>
       </div>
       <div class="feature reveal reveal-delay-1">
         <div class="feature-icon">📡</div>
-        <h3>SRE 運用監視</h3>
-        <p>エラー率・レイテンシ・OOM を常時監視。閾値超過で自動 Issue 化、AI が即座に修復開始。</p>
-        <span class="feature-tag">Copilot にはない</span>
+        <h3 data-i18n="feat.f7_title">SRE Monitoring</h3>
+        <p data-i18n="feat.f7_desc">Continuously monitors error rates, latency, and OOM. Auto-creates Issues and AI starts fixing immediately.</p>
+        <span class="feature-tag" data-i18n="feat.tag_not_copilot">Not in Copilot</span>
       </div>
       <div class="feature reveal reveal-delay-2">
         <div class="feature-icon">🧠</div>
-        <h3>AI バックログ &amp; AutoPilot</h3>
-        <p>AI が 2 パスで分析し改善 Issue を自動生成。AutoPilot ON で自律的に実装し続けます。</p>
-        <span class="feature-tag">自律改善</span>
+        <h3 data-i18n="feat.f8_title">AI Backlog &amp; AutoPilot</h3>
+        <p data-i18n="feat.f8_desc">AI runs 2-pass analysis to auto-generate improvement Issues. With AutoPilot ON, it implements them autonomously.</p>
+        <span class="feature-tag" data-i18n="feat.tag_autopilot">Autonomous</span>
       </div>
       <div class="feature reveal reveal-delay-3">
         <div class="feature-icon">🔒</div>
-        <h3>マルチ VCS 対応</h3>
-        <p>GitHub、GitLab、Bitbucket に対応。VCS にロックされず、既存のワークフローのまま導入。</p>
-        <span class="feature-tag">Copilot にはない</span>
+        <h3 data-i18n="feat.f9_title">Multi-VCS Support</h3>
+        <p data-i18n="feat.f9_desc">Supports GitHub, GitLab, and Bitbucket. No VCS lock-in — adopt with your existing workflow.</p>
+        <span class="feature-tag" data-i18n="feat.tag_not_copilot">Not in Copilot</span>
       </div>
     </div>
   </section>
 
   <!-- Metrics -->
   <section class="metrics">
-    <h2 class="section-title reveal">導入効果</h2>
-    <p class="section-subtitle reveal">ADOS が開発チームにもたらすインパクト</p>
+    <h2 class="section-title reveal" data-i18n="metrics.title">Impact</h2>
+    <p class="section-subtitle reveal" data-i18n="metrics.subtitle">The impact ADOS brings to your development team</p>
     <div class="metrics-grid">
       <div class="metric reveal reveal-delay-1">
         <div class="metric-value" data-count="80" data-suffix="%">0%</div>
-        <div class="metric-label">インシデント初動の短縮</div>
-        <div class="metric-desc">SRE Agent が異常を即座に検知し、AI が修復 PR を自動生成</div>
+        <div class="metric-label" data-i18n="metrics.m1_label">Faster Incident Response</div>
+        <div class="metric-desc" data-i18n="metrics.m1_desc">SRE Agent detects anomalies instantly and AI auto-generates fix PRs</div>
       </div>
       <div class="metric reveal reveal-delay-2">
         <div class="metric-value" data-count="10" data-suffix="h+">0h+</div>
-        <div class="metric-label">週あたりの工数削減</div>
-        <div class="metric-desc">定型 Issue・CI 修復・バックログ整理を AI が自動処理</div>
+        <div class="metric-label" data-i18n="metrics.m2_label">Hours Saved Per Week</div>
+        <div class="metric-desc" data-i18n="metrics.m2_desc">AI auto-handles routine Issues, CI fixes, and backlog grooming</div>
       </div>
       <div class="metric reveal reveal-delay-3">
         <div class="metric-value" data-count="24" data-suffix="/7">0/7</div>
-        <div class="metric-label">ノンストップ開発</div>
-        <div class="metric-desc">AutoPilot が深夜も休日もリポジトリを改善し続ける</div>
+        <div class="metric-label" data-i18n="metrics.m3_label">Non-Stop Development</div>
+        <div class="metric-desc" data-i18n="metrics.m3_desc">AutoPilot improves your repositories even on nights and weekends</div>
       </div>
       <div class="metric reveal reveal-delay-4">
         <div class="metric-value" data-count="0" data-suffix="" data-is-zero="true">0</div>
-        <div class="metric-label">ベンダーロックイン</div>
-        <div class="metric-desc">マルチ VCS・マルチ AI・セルフホスト対応で依存なし</div>
+        <div class="metric-label" data-i18n="metrics.m4_label">Vendor Lock-In</div>
+        <div class="metric-desc" data-i18n="metrics.m4_desc">Multi-VCS, multi-AI, self-hosted — zero dependencies</div>
       </div>
     </div>
   </section>
 
   <!-- Use Cases -->
   <section class="usecases">
-    <h2 class="section-title reveal">こんなチームに最適</h2>
-    <p class="section-subtitle reveal">「コードを書く」だけでなく「開発チームを回す」プラットフォームです</p>
+    <h2 class="section-title reveal" data-i18n="uc.title">Perfect For Teams That…</h2>
+    <p class="section-subtitle reveal" data-i18n="uc.subtitle">Not just "write code" — a platform that "runs your dev team"</p>
     <div class="usecases-grid">
       <div class="usecase reveal reveal-delay-1">
         <span class="usecase-emoji">🔥</span>
-        <h3>深夜の障害対応</h3>
-        <p>SRE Agent がエラー率の急上昇を検知 → 原因を特定 → 修復 PR を自動生成。</p>
+        <h3 data-i18n="uc.uc1_title">Late-Night Incident Response</h3>
+        <p data-i18n="uc.uc1_desc">SRE Agent detects error rate spikes → identifies the cause → auto-generates a fix PR.</p>
         <div class="usecase-before-after">
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
-            <span style="color:var(--text-muted)">深夜にアラート → 起きて対応 → 翌日ぐったり</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc1_before">Alert at 3am → wake up → fix → exhausted next day</span>
           </div>
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
-            <span style="color:var(--text-muted)">起きたら修復 PR が待っている ☕</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc1_after">Wake up to a fix PR waiting for you ☕</span>
           </div>
         </div>
       </div>
       <div class="usecase reveal reveal-delay-2">
         <span class="usecase-emoji">🔄</span>
-        <h3>CI が壊れたまま放置</h3>
-        <p>Pipeline Watcher が CI/CD の失敗を常時監視。テスト修正から依存更新まで自動。</p>
+        <h3 data-i18n="uc.uc2_title">Broken CI Left Unattended</h3>
+        <p data-i18n="uc.uc2_desc">Pipeline Watcher monitors CI/CD failures 24/7. Auto-fixes tests and dependency updates.</p>
         <div class="usecase-before-after">
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
-            <span style="color:var(--text-muted)">「誰かが直すだろう」→ 3日間赤いまま</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc2_before">"Someone will fix it" → stays red for 3 days</span>
           </div>
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
-            <span style="color:var(--text-muted)">失敗から 5 分で修復 PR が届く</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc2_after">Fix PR arrives within 5 minutes of failure</span>
           </div>
         </div>
       </div>
       <div class="usecase reveal reveal-delay-3">
         <span class="usecase-emoji">📋</span>
-        <h3>技術的負債の可視化</h3>
-        <p>AI がリポジトリ全体を分析し、改善点をバックログとして Issue 化。</p>
+        <h3 data-i18n="uc.uc3_title">Tech Debt Visibility</h3>
+        <p data-i18n="uc.uc3_desc">AI analyzes your entire repository and creates improvement Issues as a backlog.</p>
         <div class="usecase-before-after">
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-before">BEFORE</span>
-            <span style="color:var(--text-muted)">「いつかリファクタしよう」→ 永遠に来ない</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc3_before">"We'll refactor someday" → someday never comes</span>
           </div>
           <div class="usecase-ba-row">
             <span class="usecase-ba-tag usecase-ba-after">AFTER</span>
-            <span style="color:var(--text-muted)">AI が Issue 化 → AutoPilot が改善し続ける</span>
+            <span style="color:var(--text-muted)" data-i18n="uc.uc3_after">AI creates Issues → AutoPilot keeps improving</span>
           </div>
         </div>
       </div>
@@ -1151,8 +1243,8 @@
 
   <!-- AI Agents -->
   <section class="agents reveal">
-    <h2 class="section-title">対応 AI エージェント</h2>
-    <p class="section-subtitle">Issue の難易度に応じて最適なエージェントを自動選択。フォールバック付き。</p>
+    <h2 class="section-title" data-i18n="agents.title">Supported AI Agents</h2>
+    <p class="section-subtitle" data-i18n="agents.subtitle">Auto-selects the best agent based on issue difficulty. With fallback support.</p>
     <div class="agents-logos">
       <div class="agent-logo">
         <div class="agent-logo-icon">🐙</div>
@@ -1171,96 +1263,97 @@
 
   <!-- Pricing -->
   <section class="pricing" id="pricing">
-    <h2 class="section-title reveal">料金プラン</h2>
-    <p class="section-subtitle reveal">小さく始めて、チームの成長に合わせてスケール</p>
+    <h2 class="section-title reveal" data-i18n="price.title">Pricing</h2>
+    <p class="section-subtitle reveal" data-i18n="price.subtitle">Start small, scale as your team grows</p>
     <div class="pricing-grid">
       <div class="price-card reveal reveal-delay-1">
         <h3>Free</h3>
-        <div class="price-amount">¥0</div>
-        <div class="price-note">ずっと無料</div>
+        <div class="price-amount" data-i18n="price.free_amount">$0</div>
+        <div class="price-note" data-i18n="price.free_note">Free forever</div>
         <ul class="price-features">
-          <li>1 リポジトリ</li>
-          <li>20 Issue / 月</li>
-          <li>Copilot エージェント</li>
-          <li>コミュニティサポート</li>
+          <li data-i18n="price.free_f1">1 repository</li>
+          <li data-i18n="price.free_f2">20 issues / month</li>
+          <li data-i18n="price.free_f3">Copilot agent</li>
+          <li data-i18n="price.free_f4">Community support</li>
         </ul>
-        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">🎁 14日間無料トライアル</a>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary" data-i18n="price.free_cta">🎁 14-Day Free Trial</a>
       </div>
       <div class="price-card popular reveal reveal-delay-2">
+        <span class="price-popular-badge" data-i18n="price.popular">Popular</span>
         <h3>Pro</h3>
-        <div class="price-amount">¥4,980</div>
-        <div class="price-note">/月</div>
+        <div class="price-amount" data-i18n="price.pro_amount">$39</div>
+        <div class="price-note" data-i18n="price.pro_note">/month</div>
         <ul class="price-features">
-          <li>5 リポジトリ</li>
-          <li>Issue 処理 無制限</li>
-          <li>Copilot + Claude エージェント</li>
-          <li>SRE 運用監視</li>
-          <li>ワークフロー</li>
-          <li>優先サポート</li>
+          <li data-i18n="price.pro_f1">5 repositories</li>
+          <li data-i18n="price.pro_f2">Unlimited issue processing</li>
+          <li data-i18n="price.pro_f3">Copilot + Claude agents</li>
+          <li data-i18n="price.pro_f4">SRE monitoring</li>
+          <li data-i18n="price.pro_f5">Workflows</li>
+          <li data-i18n="price.pro_f6">Priority support</li>
         </ul>
-        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-primary">Pro にアップグレード</a>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-primary" data-i18n="price.pro_cta">Upgrade to Pro</a>
       </div>
       <div class="price-card reveal reveal-delay-3">
         <h3>Team</h3>
-        <div class="price-amount">¥14,980</div>
-        <div class="price-note">/シート/月</div>
+        <div class="price-amount" data-i18n="price.team_amount">$119</div>
+        <div class="price-note" data-i18n="price.team_note">/seat/month</div>
         <ul class="price-features">
-          <li>リポジトリ 無制限</li>
-          <li>Issue 処理 無制限</li>
-          <li>AI エージェント 無制限</li>
-          <li>SRE 運用監視</li>
-          <li>監査ログ</li>
-          <li>専任サポート</li>
+          <li data-i18n="price.team_f1">Unlimited repositories</li>
+          <li data-i18n="price.team_f2">Unlimited issue processing</li>
+          <li data-i18n="price.team_f3">Unlimited AI agents</li>
+          <li data-i18n="price.team_f4">SRE monitoring</li>
+          <li data-i18n="price.team_f5">Audit logs</li>
+          <li data-i18n="price.team_f6">Dedicated support</li>
         </ul>
-        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary">Team にアップグレード</a>
+        <a href="https://ados-platform-dashboard.web.app" class="price-cta price-cta-secondary" data-i18n="price.team_cta">Upgrade to Team</a>
       </div>
     </div>
   </section>
 
   <!-- FAQ -->
   <section class="faq" id="faq">
-    <h2 class="section-title reveal">よくある質問</h2>
-    <p class="section-subtitle reveal">導入前に気になるポイントをまとめました</p>
+    <h2 class="section-title reveal" data-i18n="faq.title">Frequently Asked Questions</h2>
+    <p class="section-subtitle reveal" data-i18n="faq.subtitle">Common questions before getting started</p>
     <div class="faq-list">
       <details class="faq-item reveal">
-        <summary>GitHub Copilot Coding Agent とは何が違いますか？</summary>
-        <p>Copilot Coding Agent は「Issue を受けてコードを書く 1 人のジュニア開発者」です。ADOS は Copilot を含む複数の AI を束ねて「チーム全体の開発運用を自律的に回す」プラットフォームです。SRE 監視、CI/CD 自動修復、バックログ自動生成、AutoPilot による自律改善など、Copilot にはない機能を多数搭載しています。</p>
+        <summary data-i18n="faq.q1">How is ADOS different from GitHub Copilot Coding Agent?</summary>
+        <p data-i18n="faq.a1">Copilot Coding Agent is like "a junior developer who writes code from Issues." ADOS orchestrates multiple AI agents including Copilot to "autonomously run your entire development operations." It includes SRE monitoring, CI/CD auto-repair, backlog generation, and AutoPilot — features Copilot doesn't have.</p>
       </details>
       <details class="faq-item reveal">
-        <summary>GitHub 以外の VCS でも使えますか？</summary>
-        <p>はい。GitHub、GitLab、Bitbucket に対応しています。既存のソース管理を変えることなく導入可能です。</p>
+        <summary data-i18n="faq.q2">Does it work with VCS other than GitHub?</summary>
+        <p data-i18n="faq.a2">Yes. ADOS supports GitHub, GitLab, and Bitbucket. You can adopt it without changing your existing source control.</p>
       </details>
       <details class="faq-item reveal">
-        <summary>自社のインフラで動かせますか？</summary>
-        <p>はい。セルフホスト Docker Runner を使えば、自社のオンプレミス環境やプライベートクラウドで AI エージェントを実行できます。コードが外部に出ることはありません。</p>
+        <summary data-i18n="faq.q3">Can I run it on my own infrastructure?</summary>
+        <p data-i18n="faq.a3">Yes. With the self-hosted Docker Runner, you can run AI agents on your on-premise environment or private cloud. Your code never leaves your infrastructure.</p>
       </details>
       <details class="faq-item reveal">
-        <summary>AutoPilot とは何ですか？</summary>
-        <p>AutoPilot は ADOS の自律改善モードです。有効にすると、AI がリポジトリのコードを定期的に分析し、改善項目を自動で Issue 化・実装します。人間は承認するだけで、リポジトリが継続的に改善されていきます。</p>
+        <summary data-i18n="faq.q4">What is AutoPilot?</summary>
+        <p data-i18n="faq.a4">AutoPilot is ADOS's autonomous improvement mode. When enabled, AI periodically analyzes your repository code, auto-creates improvement Issues, and implements them. You just approve — your repository keeps getting better automatically.</p>
       </details>
       <details class="faq-item reveal">
-        <summary>どの AI エージェントが使われるか選べますか？</summary>
-        <p>はい。Issue の複雑さに応じた自動選択のほか、手動で指定することも可能です。Copilot CLI、Claude Code、Codex に対応しています。</p>
+        <summary data-i18n="faq.q5">Can I choose which AI agent is used?</summary>
+        <p data-i18n="faq.a5">Yes. In addition to auto-selection based on issue complexity, you can manually specify an agent. Supports Copilot CLI, Claude Code, and Codex.</p>
       </details>
       <details class="faq-item reveal">
-        <summary>セキュリティは大丈夫ですか？</summary>
-        <p>セルフホスト Runner によりコードが外部に出ることはありません。また、全ワークフローに Plan → Approval → Implement の承認ゲートを設定でき、AI が勝手にデプロイすることはありません。</p>
+        <summary data-i18n="faq.q6">Is it secure?</summary>
+        <p data-i18n="faq.a6">Your code never leaves your infrastructure with the self-hosted Runner. Plus, all workflows support Plan → Approval → Implement gates, preventing AI from deploying without your permission.</p>
       </details>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="cta-section reveal">
-    <h2>今すぐ始めよう</h2>
-    <p>14日間の Pro トライアル付き。クレジットカード不要。</p>
-    <a href="https://ados-platform-dashboard.web.app" class="btn-primary">🎁 14日間無料トライアル →</a>
+    <h2 data-i18n="cta.title">Get Started Now</h2>
+    <p data-i18n="cta.desc">14-day Pro trial included. No credit card required.</p>
+    <a href="https://ados-platform-dashboard.web.app" class="btn-primary" data-i18n="cta.btn">🎁 14-Day Free Trial →</a>
     <div class="cta-email-signup">
-      <p class="cta-email-label">📬 最新情報・リリースノートをメールでお届け</p>
+      <p class="cta-email-label" data-i18n="cta.email_label">📬 Get the latest updates & release notes via email</p>
       <form id="email-form" class="cta-email-form" onsubmit="handleEmailSignup(event)">
         <input type="email" id="signup-email" placeholder="your@email.com" required class="cta-email-input">
-        <button type="submit" class="cta-email-btn">登録</button>
+        <button type="submit" class="cta-email-btn" data-i18n="cta.email_btn">Subscribe</button>
       </form>
-      <div id="email-success" class="cta-email-success">✅ 登録ありがとうございます！</div>
+      <div id="email-success" class="cta-email-success" data-i18n="cta.email_success">✅ Thank you for subscribing!</div>
     </div>
   </section>
 
@@ -1269,15 +1362,453 @@
     <div class="footer-inner">
       <div class="footer-copy">&copy; 2026 ADOS. All rights reserved.</div>
       <div class="footer-links">
-        <a href="https://docs.ados.dev" target="_blank" rel="noopener">ドキュメント</a>
-        <a href="/terms">利用規約</a>
-        <a href="/privacy">プライバシーポリシー</a>
-        <a href="mailto:support@ados.dev">お問い合わせ</a>
+        <a href="https://docs.ados.dev" target="_blank" rel="noopener" data-i18n="footer.docs">Docs</a>
+        <a href="/terms" data-i18n="footer.terms">Terms of Service</a>
+        <a href="/privacy" data-i18n="footer.privacy">Privacy Policy</a>
+        <a href="mailto:support@ados.dev" data-i18n="footer.contact">Contact</a>
       </div>
     </div>
   </footer>
 
   <script>
+  // ═══════════════════════════════════════════
+  // Translations
+  // ═══════════════════════════════════════════
+  var translations = {
+    ja: {
+      // Nav
+      'nav.comparison': '比較',
+      'nav.how': '仕組み',
+      'nav.features': '機能',
+      'nav.pricing': '料金',
+      'nav.docs': 'ドキュメント',
+      'nav.cta': '無料で始める →',
+      // Hero
+      'hero.badge': 'Copilot を内包し、その先へ',
+      'hero.title': '開発を止めない<br>AI DevOps チーム',
+      'hero.desc': 'Issue 解決、CI/CD 修復、SRE 監視、自律改善 ——<br>AI が DevOps チーム全体を 24/7 で回す。あなたはレビューするだけ。',
+      'hero.cta1': '🎁 14日間無料トライアル',
+      'hero.cta2': '📊 Copilot と比較する',
+      'hero.stat3': '自律運用',
+      // Demo
+      'demo.title': 'ADOS — ターミナル',
+      // Comparison
+      'comp.title': 'Copilot Coding Agent との違い',
+      'comp.subtitle': 'Copilot は「コードを書く AI」。ADOS は Copilot を内包し、<br>DevOps チーム全体を回すプラットフォームです。',
+      'comp.th_copilot': 'GitHub Copilot<br>Coding Agent',
+      'comp.r1': 'Issue → PR 自動生成',
+      'comp.r2': '対応 VCS',
+      'comp.r2_cop': 'GitHub のみ',
+      'comp.r3': 'AI エージェント',
+      'comp.r3_cop': 'Copilot のみ',
+      'comp.r3_ados': 'Copilot + Claude + Codex 自動選択',
+      'comp.r4': 'CI/CD 失敗の自動修復',
+      'comp.r4_cop': '同一 PR 内のみ',
+      'comp.r4_ados': '全パイプラインを常時監視・修復',
+      'comp.r5': 'SRE 運用監視',
+      'comp.r5_ados': 'エラー率・レイテンシ・OOM を監視',
+      'comp.r6': 'AutoPilot（自律改善）',
+      'comp.r6_ados': 'リポジトリを自律的に改善し続ける',
+      'comp.r7': 'AI バックログ生成',
+      'comp.r7_ados': '技術的負債を AI が分析・Issue 化',
+      'comp.r8': 'セルフホスト実行',
+      'comp.r8_ados': 'Docker Runner でオンプレ実行可能',
+      'comp.r9': '複数リポジトリ横断',
+      'comp.r9_cop': '1 リポジトリ単位',
+      'comp.r9_ados': '組織全体を一元管理',
+      'comp.note': '💡 ADOS は Copilot を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。',
+      // How It Works
+      'how.title': '3 ステップで自動化',
+      'how.subtitle': 'ADOS はあなたのリポジトリと連携し、Issue を自動で解決します。',
+      'how.s1_title': 'リポジトリを接続',
+      'how.s1_desc': 'GitHub / GitLab / Bitbucket と連携。設定・ラベルをカスタマイズ。',
+      'how.s2_title': 'Issue を登録',
+      'how.s2_desc': '通常どおり Issue を作成し、ADOS ラベルを付与。AI が自動で解析を開始。',
+      'how.s3_title': 'PR をレビュー',
+      'how.s3_desc': 'AI がコードを実装して PR を作成。あなたはレビューしてマージするだけ。',
+      // Closed-Loop
+      'loop.subtitle': '「監視 → 検知 → 修復 → デプロイ」の完全自律ループ。<br>人間が寝ている間も、AI がプロダクトを守り続けます。',
+      'loop.n1_label': '監視',
+      'loop.n1_desc': 'SRE Agent が<br>常時モニタリング',
+      'loop.n2_label': '検知 & Issue 化',
+      'loop.n2_desc': '閾値超過を自動検知<br>Issue を自動生成',
+      'loop.n3_label': 'AI 修復',
+      'loop.n3_desc': '最適 AI Agent が<br>修復 PR を作成',
+      'loop.n4_label': 'デプロイ',
+      'loop.n4_desc': 'マージ → CI/CD<br>自動デプロイ',
+      'loop.caption': 'Copilot は <em>Issue → PR</em> だけ。ADOS は<em>全ループを自律運用</em>します。',
+      // Features
+      'feat.title': '主な機能',
+      'feat.subtitle': '開発チームの生産性を 10x にする機能群',
+      'feat.f1_title': 'マルチ AI エージェント',
+      'feat.f1_desc': 'Copilot、Claude、Codex を Issue の複雑さに応じて自動選択。フォールバック付きで失敗しても止まりません。',
+      'feat.tag_not_copilot': 'Copilot にはない',
+      'feat.f2_title': 'パイプライン自動修復',
+      'feat.f2_desc': 'CI/CD の失敗を自動検知し、修復 PR を作成。ビルドが壊れていても深夜でも、放置しません。',
+      'feat.tag_247': '24/7 自動',
+      'feat.f3_title': 'ダッシュボード',
+      'feat.f3_desc': 'ジョブ統計、成功率、トレンド、エージェント別パフォーマンスをリアルタイムで可視化。',
+      'feat.f4_title': 'セルフホスト Runner',
+      'feat.f4_desc': 'Docker 環境で AI エージェントをオンプレ実行。コードが外部に出ることはありません。',
+      'feat.tag_secure': 'セキュア',
+      'feat.f5_title': 'ワークフロー',
+      'feat.f5_desc': 'Plan → Approval → Implement → Review の 4 段階。人間のレビューをゲートに設定可能。',
+      'feat.f6_title': 'Agentic Chat',
+      'feat.f6_desc': 'ブラウザから AI エージェントとチャット。リポジトリのコンテキストを理解した会話が可能。',
+      'feat.f7_title': 'SRE 運用監視',
+      'feat.f7_desc': 'エラー率・レイテンシ・OOM を常時監視。閾値超過で自動 Issue 化、AI が即座に修復開始。',
+      'feat.f8_title': 'AI バックログ & AutoPilot',
+      'feat.f8_desc': 'AI が 2 パスで分析し改善 Issue を自動生成。AutoPilot ON で自律的に実装し続けます。',
+      'feat.tag_autopilot': '自律改善',
+      'feat.f9_title': 'マルチ VCS 対応',
+      'feat.f9_desc': 'GitHub、GitLab、Bitbucket に対応。VCS にロックされず、既存のワークフローのまま導入。',
+      // Metrics
+      'metrics.title': '導入効果',
+      'metrics.subtitle': 'ADOS が開発チームにもたらすインパクト',
+      'metrics.m1_label': 'インシデント初動の短縮',
+      'metrics.m1_desc': 'SRE Agent が異常を即座に検知し、AI が修復 PR を自動生成',
+      'metrics.m2_label': '週あたりの工数削減',
+      'metrics.m2_desc': '定型 Issue・CI 修復・バックログ整理を AI が自動処理',
+      'metrics.m3_label': 'ノンストップ開発',
+      'metrics.m3_desc': 'AutoPilot が深夜も休日もリポジトリを改善し続ける',
+      'metrics.m4_label': 'ベンダーロックイン',
+      'metrics.m4_desc': 'マルチ VCS・マルチ AI・セルフホスト対応で依存なし',
+      // Use Cases
+      'uc.title': 'こんなチームに最適',
+      'uc.subtitle': '「コードを書く」だけでなく「開発チームを回す」プラットフォームです',
+      'uc.uc1_title': '深夜の障害対応',
+      'uc.uc1_desc': 'SRE Agent がエラー率の急上昇を検知 → 原因を特定 → 修復 PR を自動生成。',
+      'uc.uc1_before': '深夜にアラート → 起きて対応 → 翌日ぐったり',
+      'uc.uc1_after': '起きたら修復 PR が待っている ☕',
+      'uc.uc2_title': 'CI が壊れたまま放置',
+      'uc.uc2_desc': 'Pipeline Watcher が CI/CD の失敗を常時監視。テスト修正から依存更新まで自動。',
+      'uc.uc2_before': '「誰かが直すだろう」→ 3日間赤いまま',
+      'uc.uc2_after': '失敗から 5 分で修復 PR が届く',
+      'uc.uc3_title': '技術的負債の可視化',
+      'uc.uc3_desc': 'AI がリポジトリ全体を分析し、改善点をバックログとして Issue 化。',
+      'uc.uc3_before': '「いつかリファクタしよう」→ 永遠に来ない',
+      'uc.uc3_after': 'AI が Issue 化 → AutoPilot が改善し続ける',
+      // Agents
+      'agents.title': '対応 AI エージェント',
+      'agents.subtitle': 'Issue の難易度に応じて最適なエージェントを自動選択。フォールバック付き。',
+      // Pricing
+      'price.title': '料金プラン',
+      'price.subtitle': '小さく始めて、チームの成長に合わせてスケール',
+      'price.popular': '人気',
+      'price.free_amount': '$0',
+      'price.free_note': 'ずっと無料',
+      'price.free_f1': '1 リポジトリ',
+      'price.free_f2': '20 Issue / 月',
+      'price.free_f3': 'Copilot エージェント',
+      'price.free_f4': 'コミュニティサポート',
+      'price.free_cta': '🎁 14日間無料トライアル',
+      'price.pro_amount': '$39',
+      'price.pro_note': '/月',
+      'price.pro_f1': '5 リポジトリ',
+      'price.pro_f2': 'Issue 処理 無制限',
+      'price.pro_f3': 'Copilot + Claude エージェント',
+      'price.pro_f4': 'SRE 運用監視',
+      'price.pro_f5': 'ワークフロー',
+      'price.pro_f6': '優先サポート',
+      'price.pro_cta': 'Pro にアップグレード',
+      'price.team_amount': '$119',
+      'price.team_note': '/シート/月',
+      'price.team_f1': 'リポジトリ 無制限',
+      'price.team_f2': 'Issue 処理 無制限',
+      'price.team_f3': 'AI エージェント 無制限',
+      'price.team_f4': 'SRE 運用監視',
+      'price.team_f5': '監査ログ',
+      'price.team_f6': '専任サポート',
+      'price.team_cta': 'Team にアップグレード',
+      // FAQ
+      'faq.title': 'よくある質問',
+      'faq.subtitle': '導入前に気になるポイントをまとめました',
+      'faq.q1': 'GitHub Copilot Coding Agent とは何が違いますか？',
+      'faq.a1': 'Copilot Coding Agent は「Issue を受けてコードを書く 1 人のジュニア開発者」です。ADOS は Copilot を含む複数の AI を束ねて「チーム全体の開発運用を自律的に回す」プラットフォームです。SRE 監視、CI/CD 自動修復、バックログ自動生成、AutoPilot による自律改善など、Copilot にはない機能を多数搭載しています。',
+      'faq.q2': 'GitHub 以外の VCS でも使えますか？',
+      'faq.a2': 'はい。GitHub、GitLab、Bitbucket に対応しています。既存のソース管理を変えることなく導入可能です。',
+      'faq.q3': '自社のインフラで動かせますか？',
+      'faq.a3': 'はい。セルフホスト Docker Runner を使えば、自社のオンプレミス環境やプライベートクラウドで AI エージェントを実行できます。コードが外部に出ることはありません。',
+      'faq.q4': 'AutoPilot とは何ですか？',
+      'faq.a4': 'AutoPilot は ADOS の自律改善モードです。有効にすると、AI がリポジトリのコードを定期的に分析し、改善項目を自動で Issue 化・実装します。人間は承認するだけで、リポジトリが継続的に改善されていきます。',
+      'faq.q5': 'どの AI エージェントが使われるか選べますか？',
+      'faq.a5': 'はい。Issue の複雑さに応じた自動選択のほか、手動で指定することも可能です。Copilot CLI、Claude Code、Codex に対応しています。',
+      'faq.q6': 'セキュリティは大丈夫ですか？',
+      'faq.a6': 'セルフホスト Runner によりコードが外部に出ることはありません。また、全ワークフローに Plan → Approval → Implement の承認ゲートを設定でき、AI が勝手にデプロイすることはありません。',
+      // CTA
+      'cta.title': '今すぐ始めよう',
+      'cta.desc': '14日間の Pro トライアル付き。クレジットカード不要。',
+      'cta.btn': '🎁 14日間無料トライアル →',
+      'cta.email_label': '📬 最新情報・リリースノートをメールでお届け',
+      'cta.email_btn': '登録',
+      'cta.email_success': '✅ 登録ありがとうございます！',
+      // Footer
+      'footer.docs': 'ドキュメント',
+      'footer.terms': '利用規約',
+      'footer.privacy': 'プライバシーポリシー',
+      'footer.contact': 'お問い合わせ',
+    },
+    ru: {
+      // Nav
+      'nav.comparison': 'Сравнение',
+      'nav.how': 'Как работает',
+      'nav.features': 'Функции',
+      'nav.pricing': 'Цены',
+      'nav.docs': 'Документация',
+      'nav.cta': 'Начать бесплатно →',
+      // Hero
+      'hero.badge': 'Больше, чем Copilot',
+      'hero.title': 'AI DevOps команда,<br>которая не останавливается',
+      'hero.desc': 'Решение Issue, восстановление CI/CD, мониторинг SRE, автономное улучшение —<br>ИИ управляет всей DevOps командой 24/7. Вы только проверяете.',
+      'hero.cta1': '🎁 14 дней бесплатно',
+      'hero.cta2': '📊 Сравнить с Copilot',
+      'hero.stat3': 'Автономная работа',
+      // Demo
+      'demo.title': 'ADOS — Терминал',
+      // Comparison
+      'comp.title': 'Чем ADOS отличается от Copilot',
+      'comp.subtitle': 'Copilot — «ИИ, который пишет код». ADOS включает Copilot<br>и управляет всей DevOps командой как платформа.',
+      'comp.th_copilot': 'GitHub Copilot<br>Coding Agent',
+      'comp.r1': 'Issue → PR автогенерация',
+      'comp.r2': 'Поддержка VCS',
+      'comp.r2_cop': 'Только GitHub',
+      'comp.r3': 'ИИ-агенты',
+      'comp.r3_cop': 'Только Copilot',
+      'comp.r3_ados': 'Copilot + Claude + Codex автовыбор',
+      'comp.r4': 'Автоисправление CI/CD',
+      'comp.r4_cop': 'Только в том же PR',
+      'comp.r4_ados': 'Мониторинг и исправление всех пайплайнов',
+      'comp.r5': 'SRE мониторинг',
+      'comp.r5_ados': 'Мониторинг ошибок, задержек и OOM',
+      'comp.r6': 'AutoPilot (авт. улучшение)',
+      'comp.r6_ados': 'Автономно улучшает репозитории',
+      'comp.r7': 'ИИ бэклог',
+      'comp.r7_ados': 'ИИ анализирует тех. долг → создаёт Issue',
+      'comp.r8': 'Самостоятельный хостинг',
+      'comp.r8_ados': 'Локальный запуск через Docker Runner',
+      'comp.r9': 'Кросс-репозиторий',
+      'comp.r9_cop': 'По одному репозиторию',
+      'comp.r9_ados': 'Управление всей организацией',
+      'comp.note': '💡 ADOS включает Copilot как один из своих ИИ-агентов.<br>Не конкурент — <strong>платформа для максимального использования Copilot</strong>.',
+      // How It Works
+      'how.title': 'Автоматизация за 3 шага',
+      'how.subtitle': 'ADOS подключается к вашим репозиториям и решает Issue автоматически.',
+      'how.s1_title': 'Подключите репозиторий',
+      'how.s1_desc': 'Свяжите GitHub / GitLab / Bitbucket. Настройте параметры и метки.',
+      'how.s2_title': 'Создайте Issue',
+      'how.s2_desc': 'Создайте Issue как обычно, добавьте метку ADOS. ИИ начнёт анализ автоматически.',
+      'how.s3_title': 'Проверьте PR',
+      'how.s3_desc': 'ИИ напишет код и создаст PR. Вам останется только проверить и смёрджить.',
+      // Closed-Loop
+      'loop.subtitle': 'Полностью автономный цикл: Мониторинг → Обнаружение → Исправление → Деплой.<br>Пока вы спите, ИИ защищает ваш продукт.',
+      'loop.n1_label': 'Мониторинг',
+      'loop.n1_desc': 'SRE Agent<br>24/7 наблюдение',
+      'loop.n2_label': 'Обнаружение',
+      'loop.n2_desc': 'Авто-обнаружение аномалий<br>Авто-создание Issue',
+      'loop.n3_label': 'ИИ исправление',
+      'loop.n3_desc': 'Лучший ИИ-агент<br>создаёт fix PR',
+      'loop.n4_label': 'Деплой',
+      'loop.n4_desc': 'Мёрдж → CI/CD<br>Авто-деплой',
+      'loop.caption': 'Copilot делает только <em>Issue → PR</em>. ADOS <em>управляет всем циклом автономно</em>.',
+      // Features
+      'feat.title': 'Ключевые функции',
+      'feat.subtitle': 'Набор функций, увеличивающий продуктивность команды в 10 раз',
+      'feat.f1_title': 'Мульти-ИИ агенты',
+      'feat.f1_desc': 'Автоматически выбирает Copilot, Claude или Codex в зависимости от сложности Issue. Фолбэк гарантирует непрерывность.',
+      'feat.tag_not_copilot': 'Нет в Copilot',
+      'feat.f2_title': 'Автоисправление пайплайнов',
+      'feat.f2_desc': 'Автоматически обнаруживает сбои CI/CD и создаёт fix PR. Днём и ночью — сломанные билды не останутся без внимания.',
+      'feat.tag_247': '24/7 Авто',
+      'feat.f3_title': 'Дашборд',
+      'feat.f3_desc': 'Визуализация статистики заданий, success rate, трендов и производительности по агентам в реальном времени.',
+      'feat.f4_title': 'Self-Hosted Runner',
+      'feat.f4_desc': 'Запускайте ИИ-агентов локально в Docker. Ваш код никогда не покинет вашу инфраструктуру.',
+      'feat.tag_secure': 'Безопасно',
+      'feat.f5_title': 'Рабочие процессы',
+      'feat.f5_desc': '4 этапа: Plan → Approval → Implement → Review. Человеческая проверка как гейт.',
+      'feat.f6_title': 'Agentic Chat',
+      'feat.f6_desc': 'Общайтесь с ИИ-агентами из браузера. Контекстные разговоры с пониманием вашего репозитория.',
+      'feat.f7_title': 'SRE мониторинг',
+      'feat.f7_desc': 'Непрерывный мониторинг ошибок, задержек и OOM. Автоматическое создание Issue и немедленное исправление.',
+      'feat.f8_title': 'ИИ бэклог и AutoPilot',
+      'feat.f8_desc': 'ИИ проводит двухпроходный анализ и генерирует Issue для улучшений. С AutoPilot ON — реализует автономно.',
+      'feat.tag_autopilot': 'Автономно',
+      'feat.f9_title': 'Мульти-VCS',
+      'feat.f9_desc': 'Поддержка GitHub, GitLab и Bitbucket. Никакой привязки к VCS — внедряйте с вашим текущим workflow.',
+      // Metrics
+      'metrics.title': 'Результаты',
+      'metrics.subtitle': 'Влияние ADOS на вашу команду разработки',
+      'metrics.m1_label': 'Ускорение реакции на инциденты',
+      'metrics.m1_desc': 'SRE Agent мгновенно обнаруживает аномалии, ИИ автоматически создаёт fix PR',
+      'metrics.m2_label': 'Экономия часов в неделю',
+      'metrics.m2_desc': 'ИИ автоматически обрабатывает типовые Issue, исправления CI и бэклог',
+      'metrics.m3_label': 'Непрерывная разработка',
+      'metrics.m3_desc': 'AutoPilot улучшает ваши репозитории ночью и в выходные',
+      'metrics.m4_label': 'Vendor Lock-In',
+      'metrics.m4_desc': 'Мульти-VCS, мульти-ИИ, self-hosted — ноль зависимостей',
+      // Use Cases
+      'uc.title': 'Идеально для команд, которые…',
+      'uc.subtitle': 'Не просто «пишет код» — платформа, которая «управляет командой разработки»',
+      'uc.uc1_title': 'Ночные инциденты',
+      'uc.uc1_desc': 'SRE Agent обнаруживает скачок ошибок → определяет причину → автоматически создаёт fix PR.',
+      'uc.uc1_before': 'Алерт в 3 часа ночи → просыпаешься → чинишь → весь день разбитый',
+      'uc.uc1_after': 'Просыпаетесь — fix PR уже ждёт вас ☕',
+      'uc.uc2_title': 'Сломанный CI без внимания',
+      'uc.uc2_desc': 'Pipeline Watcher следит за сбоями CI/CD 24/7. Автоматически исправляет тесты и обновляет зависимости.',
+      'uc.uc2_before': '«Кто-нибудь починит» → красный 3 дня',
+      'uc.uc2_after': 'Fix PR через 5 минут после сбоя',
+      'uc.uc3_title': 'Видимость техдолга',
+      'uc.uc3_desc': 'ИИ анализирует весь репозиторий и создаёт Issue с улучшениями в бэклог.',
+      'uc.uc3_before': '«Когда-нибудь отрефакторим» → никогда не приходит',
+      'uc.uc3_after': 'ИИ создаёт Issue → AutoPilot непрерывно улучшает',
+      // Agents
+      'agents.title': 'Поддерживаемые ИИ-агенты',
+      'agents.subtitle': 'Автоматический выбор лучшего агента по сложности Issue. С поддержкой фолбэка.',
+      // Pricing
+      'price.title': 'Тарифы',
+      'price.subtitle': 'Начните с малого, масштабируйтесь по мере роста команды',
+      'price.popular': 'Популярный',
+      'price.free_amount': '$0',
+      'price.free_note': 'Бесплатно навсегда',
+      'price.free_f1': '1 репозиторий',
+      'price.free_f2': '20 Issue / месяц',
+      'price.free_f3': 'Агент Copilot',
+      'price.free_f4': 'Поддержка сообщества',
+      'price.free_cta': '🎁 14 дней бесплатно',
+      'price.pro_amount': '$39',
+      'price.pro_note': '/месяц',
+      'price.pro_f1': '5 репозиториев',
+      'price.pro_f2': 'Безлимитная обработка Issue',
+      'price.pro_f3': 'Агенты Copilot + Claude',
+      'price.pro_f4': 'SRE мониторинг',
+      'price.pro_f5': 'Рабочие процессы',
+      'price.pro_f6': 'Приоритетная поддержка',
+      'price.pro_cta': 'Перейти на Pro',
+      'price.team_amount': '$119',
+      'price.team_note': '/место/месяц',
+      'price.team_f1': 'Безлимитные репозитории',
+      'price.team_f2': 'Безлимитная обработка Issue',
+      'price.team_f3': 'Безлимитные ИИ-агенты',
+      'price.team_f4': 'SRE мониторинг',
+      'price.team_f5': 'Журнал аудита',
+      'price.team_f6': 'Выделенная поддержка',
+      'price.team_cta': 'Перейти на Team',
+      // FAQ
+      'faq.title': 'Часто задаваемые вопросы',
+      'faq.subtitle': 'Ответы на популярные вопросы перед началом работы',
+      'faq.q1': 'Чем ADOS отличается от GitHub Copilot Coding Agent?',
+      'faq.a1': 'Copilot Coding Agent — это «джуниор-разработчик, который пишет код по Issue». ADOS объединяет несколько ИИ, включая Copilot, в «платформу, которая автономно управляет всей разработкой». Включает SRE мониторинг, автоисправление CI/CD, генерацию бэклога и AutoPilot — функции, которых нет в Copilot.',
+      'faq.q2': 'Работает ли с VCS кроме GitHub?',
+      'faq.a2': 'Да. ADOS поддерживает GitHub, GitLab и Bitbucket. Можно внедрить без изменения существующей системы контроля версий.',
+      'faq.q3': 'Можно ли запустить на своей инфраструктуре?',
+      'faq.a3': 'Да. С помощью self-hosted Docker Runner вы можете запускать ИИ-агентов в своей локальной среде или приватном облаке. Ваш код никогда не покинет вашу инфраструктуру.',
+      'faq.q4': 'Что такое AutoPilot?',
+      'faq.a4': 'AutoPilot — режим автономного улучшения ADOS. При активации ИИ периодически анализирует код репозитория, создаёт Issue на улучшения и реализует их. Вы только подтверждаете — репозиторий непрерывно становится лучше.',
+      'faq.q5': 'Можно ли выбрать ИИ-агента вручную?',
+      'faq.a5': 'Да. Помимо автоматического выбора по сложности Issue, можно указать агента вручную. Поддерживаются Copilot CLI, Claude Code и Codex.',
+      'faq.q6': 'Насколько это безопасно?',
+      'faq.a6': 'С self-hosted Runner ваш код не покидает вашу инфраструктуру. Кроме того, все рабочие процессы поддерживают гейты Plan → Approval → Implement, не позволяя ИИ деплоить без вашего разрешения.',
+      // CTA
+      'cta.title': 'Начните прямо сейчас',
+      'cta.desc': '14-дневный Pro триал. Кредитная карта не нужна.',
+      'cta.btn': '🎁 14 дней бесплатно →',
+      'cta.email_label': '📬 Получайте обновления и заметки о релизах по email',
+      'cta.email_btn': 'Подписаться',
+      'cta.email_success': '✅ Спасибо за подписку!',
+      // Footer
+      'footer.docs': 'Документация',
+      'footer.terms': 'Условия использования',
+      'footer.privacy': 'Политика конфиденциальности',
+      'footer.contact': 'Связаться',
+    }
+  };
+
+  // English is the default (hardcoded in HTML), so no 'en' key needed.
+  // When switching to 'en', we restore original text from data attributes.
+
+  // Store original English text
+  var originalTexts = {};
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    originalTexts[el.getAttribute('data-i18n')] = el.textContent;
+  });
+  var originalHtmls = {};
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+    originalHtmls[el.getAttribute('data-i18n-html')] = el.innerHTML;
+  });
+
+  var currentLang = localStorage.getItem('ados_lang') || 'en';
+
+  function switchLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('ados_lang', lang);
+    document.documentElement.lang = lang;
+
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (lang === 'en') {
+        el.textContent = originalTexts[key] || el.textContent;
+      } else if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    // Update HTML content
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-html');
+      if (lang === 'en') {
+        el.innerHTML = originalHtmls[key] || el.innerHTML;
+      } else if (translations[lang] && translations[lang][key]) {
+        el.innerHTML = translations[lang][key];
+      }
+    });
+
+    // Update meta tags
+    var metaDescriptions = {
+      en: 'ADOS is an AI DevOps platform that autonomously runs issue resolution, CI/CD repair, SRE monitoring, and continuous improvement 24/7. Beyond Copilot.',
+      ja: 'ADOS は Issue 解決・CI/CD 修復・SRE 監視・自律改善を AI が 24/7 で回す DevOps プラットフォーム。Copilot を内包し、その先へ。',
+      ru: 'ADOS — платформа AI DevOps, которая автономно решает Issue, восстанавливает CI/CD, мониторит SRE и непрерывно улучшает код 24/7.'
+    };
+    var metaTitles = {
+      en: 'ADOS — AI DevOps Platform | AI DevOps Team That Never Stops',
+      ja: 'ADOS — AI DevOps Platform | 開発を止めない AI DevOps チーム',
+      ru: 'ADOS — AI DevOps Platform | AI DevOps команда, которая не останавливается'
+    };
+    document.title = metaTitles[lang] || metaTitles.en;
+    var descMeta = document.querySelector('meta[name="description"]');
+    if (descMeta) descMeta.content = metaDescriptions[lang] || metaDescriptions.en;
+
+    // Update lang switcher UI
+    var flags = { en: '🇺🇸', ja: '🇯🇵', ru: '🇷🇺' };
+    var labels = { en: 'EN', ja: 'JA', ru: 'RU' };
+    document.getElementById('current-flag').textContent = flags[lang];
+    document.getElementById('current-lang').textContent = labels[lang];
+
+    // Update active state
+    document.querySelectorAll('.lang-option').forEach(function(opt) {
+      opt.classList.toggle('active', opt.getAttribute('data-lang') === lang);
+    });
+
+    // Close dropdown
+    document.getElementById('lang-switcher').classList.remove('open');
+
+    // Restart terminal demo with new language
+    restartDemo();
+  }
+
+  function toggleLangMenu(e) {
+    e.stopPropagation();
+    document.getElementById('lang-switcher').classList.toggle('open');
+  }
+
+  // Close lang menu on outside click
+  document.addEventListener('click', function(e) {
+    var switcher = document.getElementById('lang-switcher');
+    if (!switcher.contains(e.target)) {
+      switcher.classList.remove('open');
+    }
+  });
+
   // ═══════════════════════════════════════════
   // Scroll Reveal (IntersectionObserver)
   // ═══════════════════════════════════════════
@@ -1310,10 +1841,26 @@
   })();
 
   // ═══════════════════════════════════════════
-  // Terminal Typewriter Demo
+  // Terminal Typewriter Demo (multilingual)
   // ═══════════════════════════════════════════
-  (function() {
-    var lines = [
+  var demoLines = {
+    en: [
+      { text: '# 1. Create an Issue (with label)', cls: 'comment', delay: 0 },
+      { text: 'gh issue create --title "Add rate limiting to user auth" \\', cls: 'keyword', delay: 600 },
+      { text: '  --label "ados"', cls: 'label', delay: 200 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 2. ADOS auto-detects → AI agent starts implementation', cls: 'comment', delay: 300 },
+      { text: '🤖 ADOS Agent: Detected Issue #42', cls: 'func', delay: 800 },
+      { text: '  → Analyzing repository...', cls: 'string', delay: 600 },
+      { text: '  → Adding rate limiter to internal/api/auth.go', cls: 'string', delay: 800 },
+      { text: '  → Tests created & executed: PASS ✅', cls: 'label', delay: 600 },
+      { text: '  → Pull Request #43 created ✅', cls: 'label', delay: 500 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 3. You review → merge', cls: 'comment', delay: 300 },
+      { text: 'gh pr merge 43 --squash', cls: 'keyword', delay: 600 },
+      { text: '✨ Merged! CI/CD auto-deploy started...', cls: 'label', delay: 500 },
+    ],
+    ja: [
       { text: '# 1. Issue を作成 (ラベル付き)', cls: 'comment', delay: 0 },
       { text: 'gh issue create --title "ユーザー認証にレート制限を追加" \\', cls: 'keyword', delay: 600 },
       { text: '  --label "ados"', cls: 'label', delay: 200 },
@@ -1328,14 +1875,59 @@
       { text: '# 3. あなたがレビュー → マージ', cls: 'comment', delay: 300 },
       { text: 'gh pr merge 43 --squash', cls: 'keyword', delay: 600 },
       { text: '✨ マージ完了！ CI/CD が自動デプロイを開始...', cls: 'label', delay: 500 },
-    ];
+    ],
+    ru: [
+      { text: '# 1. Создайте Issue (с меткой)', cls: 'comment', delay: 0 },
+      { text: 'gh issue create --title "Добавить rate limiting в авторизацию" \\', cls: 'keyword', delay: 600 },
+      { text: '  --label "ados"', cls: 'label', delay: 200 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 2. ADOS обнаруживает → ИИ-агент начинает реализацию', cls: 'comment', delay: 300 },
+      { text: '🤖 ADOS Agent: Обнаружен Issue #42', cls: 'func', delay: 800 },
+      { text: '  → Анализ репозитория...', cls: 'string', delay: 600 },
+      { text: '  → Добавление rate limiter в internal/api/auth.go', cls: 'string', delay: 800 },
+      { text: '  → Тесты созданы и выполнены: PASS ✅', cls: 'label', delay: 600 },
+      { text: '  → Pull Request #43 создан ✅', cls: 'label', delay: 500 },
+      { text: '', cls: '', delay: 400 },
+      { text: '# 3. Вы проверяете → мёрджите', cls: 'comment', delay: 300 },
+      { text: 'gh pr merge 43 --squash', cls: 'keyword', delay: 600 },
+      { text: '✨ Смёрджено! CI/CD запускает авто-деплой...', cls: 'label', delay: 500 },
+    ]
+  };
 
+  var demoStarted = false;
+  var demoTimeout = null;
+
+  function restartDemo() {
+    // Clear existing demo
+    var terminal = document.getElementById('demo-terminal');
+    terminal.innerHTML = '<span class="typing-cursor" id="demo-cursor"></span>';
+    if (demoTimeout) clearTimeout(demoTimeout);
+    demoStarted = false;
+
+    // Re-observe
+    var demoObserver = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !demoStarted) {
+        demoStarted = true;
+        demoTimeout = setTimeout(function() { runDemo(); }, 500);
+      }
+    }, { threshold: 0.3 });
+    demoObserver.observe(terminal.closest('.demo'));
+
+    // If already visible, start immediately
+    var rect = terminal.closest('.demo').getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      demoStarted = true;
+      demoTimeout = setTimeout(function() { runDemo(); }, 500);
+    }
+  }
+
+  function runDemo() {
+    var lines = demoLines[currentLang] || demoLines.en;
     var terminal = document.getElementById('demo-terminal');
     var cursor = document.getElementById('demo-cursor');
     var lineIndex = 0;
     var charIndex = 0;
     var currentSpan = null;
-    var started = false;
 
     function typeNextChar() {
       if (lineIndex >= lines.length) {
@@ -1354,20 +1946,26 @@
       if (charIndex < line.text.length) {
         currentSpan.textContent += line.text[charIndex];
         charIndex++;
-        setTimeout(typeNextChar, 18 + Math.random() * 22);
+        demoTimeout = setTimeout(typeNextChar, 18 + Math.random() * 22);
       } else {
         terminal.insertBefore(document.createTextNode('\n'), cursor);
         lineIndex++;
         charIndex = 0;
         var nextDelay = lineIndex < lines.length ? lines[lineIndex].delay : 0;
-        setTimeout(typeNextChar, nextDelay);
+        demoTimeout = setTimeout(typeNextChar, nextDelay);
       }
     }
 
+    typeNextChar();
+  }
+
+  // Initial demo start
+  (function() {
+    var terminal = document.getElementById('demo-terminal');
     var demoObserver = new IntersectionObserver(function(entries) {
-      if (entries[0].isIntersecting && !started) {
-        started = true;
-        setTimeout(typeNextChar, 500);
+      if (entries[0].isIntersecting && !demoStarted) {
+        demoStarted = true;
+        demoTimeout = setTimeout(function() { runDemo(); }, 500);
       }
     }, { threshold: 0.3 });
     demoObserver.observe(terminal.closest('.demo'));
@@ -1446,6 +2044,13 @@
       }
     });
   });
+
+  // ═══════════════════════════════════════════
+  // Apply saved language on load
+  // ═══════════════════════════════════════════
+  if (currentLang !== 'en') {
+    switchLang(currentLang);
+  }
   </script>
 
 </body>
