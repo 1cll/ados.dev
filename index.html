@@ -831,31 +831,7 @@
     .cta-section > p {
       color: var(--text-muted); font-size: 1.15rem; margin-bottom: 2.5rem;
     }
-    .cta-email-signup { margin-top: 2.5rem; }
-    .cta-email-label { color: #a5b4fc; font-size: 0.9rem; margin-bottom: 0.75rem; }
-    .cta-email-form {
-      display: flex; gap: 0.5rem; max-width: 440px; margin: 0 auto;
-    }
-    .cta-email-input {
-      flex: 1; padding: 0.85rem 1.25rem; border-radius: 12px;
-      border: 1px solid rgba(124,58,237,0.2);
-      background: rgba(255,255,255,0.04); color: #fff;
-      font-size: 0.9rem; outline: none;
-      font-family: inherit; transition: all 0.3s;
-      backdrop-filter: blur(10px);
-    }
-    .cta-email-input:focus { border-color: var(--accent); box-shadow: 0 0 20px rgba(124,58,237,0.15); }
-    .cta-email-btn {
-      padding: 0.85rem 1.5rem; border-radius: 12px; border: none;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff; font-weight: 700; cursor: pointer;
-      white-space: nowrap; font-size: 0.9rem;
-      font-family: inherit; transition: all 0.3s;
-    }
-    .cta-email-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 20px var(--accent-glow); }
-    .cta-email-success {
-      display: none; color: #10b981; margin-top: 0.75rem; font-size: 0.9rem;
-    }
+
 
     /* ── Footer ── */
     .footer {
@@ -904,7 +880,7 @@
     @media (max-width: 480px) {
       .hero-actions { flex-direction: column; align-items: center; }
       .btn-primary, .btn-secondary { width: 100%; text-align: center; justify-content: center; }
-      .cta-email-form { flex-direction: column; }
+
       .agents-logos { gap: 1.5rem; }
       .metrics-grid { grid-template-columns: 1fr; }
       .hero-stats { flex-direction: column; gap: 1rem; }
@@ -1347,14 +1323,6 @@
     <h2 data-i18n="cta.title">Get Started Now</h2>
     <p data-i18n="cta.desc">14-day Pro trial included. No credit card required.</p>
     <a href="https://ados-platform-dashboard.web.app" class="btn-primary" data-i18n="cta.btn">🎁 14-Day Free Trial →</a>
-    <div class="cta-email-signup">
-      <p class="cta-email-label" data-i18n="cta.email_label">📬 Get the latest updates & release notes via email</p>
-      <form id="email-form" class="cta-email-form" onsubmit="handleEmailSignup(event)">
-        <input type="email" id="signup-email" placeholder="your@email.com" required class="cta-email-input">
-        <button type="submit" class="cta-email-btn" data-i18n="cta.email_btn">Subscribe</button>
-      </form>
-      <div id="email-success" class="cta-email-success" data-i18n="cta.email_success">✅ Thank you for subscribing!</div>
-    </div>
   </section>
 
   <!-- Footer -->
@@ -1539,9 +1507,7 @@
       'cta.title': '今すぐ始めよう',
       'cta.desc': '14日間の Pro トライアル付き。クレジットカード不要。',
       'cta.btn': '🎁 14日間無料トライアル →',
-      'cta.email_label': '📬 最新情報・リリースノートをメールでお届け',
-      'cta.email_btn': '登録',
-      'cta.email_success': '✅ 登録ありがとうございます！',
+
       // Footer
       'footer.docs': 'ドキュメント',
       'footer.terms': '利用規約',
@@ -1712,9 +1678,7 @@
       'cta.title': 'Начните прямо сейчас',
       'cta.desc': '14-дневный Pro триал. Кредитная карта не нужна.',
       'cta.btn': '🎁 14 дней бесплатно →',
-      'cta.email_label': '📬 Получайте обновления и заметки о релизах по email',
-      'cta.email_btn': 'Подписаться',
-      'cta.email_success': '✅ Спасибо за подписку!',
+
       // Footer
       'footer.docs': 'Документация',
       'footer.terms': 'Условия использования',
@@ -2014,15 +1978,7 @@
   // ═══════════════════════════════════════════
   // Email Signup
   // ═══════════════════════════════════════════
-  function handleEmailSignup(e) {
-    e.preventDefault();
-    var email = document.getElementById('signup-email').value;
-    var emails = JSON.parse(localStorage.getItem('ados_signups') || '[]');
-    emails.push({ email: email, timestamp: new Date().toISOString() });
-    localStorage.setItem('ados_signups', JSON.stringify(emails));
-    document.getElementById('email-form').style.display = 'none';
-    document.getElementById('email-success').style.display = 'block';
-  }
+
 
   // ═══════════════════════════════════════════
   // Mobile menu & smooth scroll
