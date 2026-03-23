@@ -994,6 +994,9 @@
           <tr><td data-i18n="comp.r7">AI backlog generation</td><td>—</td><td class="ados-col" data-i18n="comp.r7_ados">AI analyzes tech debt → creates Issues</td></tr>
           <tr><td data-i18n="comp.r8">Self-hosted execution</td><td>—</td><td class="ados-col" data-i18n="comp.r8_ados">On-premise via Docker Runner</td></tr>
           <tr><td data-i18n="comp.r9">Cross-repository</td><td data-i18n="comp.r9_cop">Per repository</td><td class="ados-col" data-i18n="comp.r9_ados">Manage entire organization</td></tr>
+          <tr><td data-i18n="comp.r10">Scheduled maintenance</td><td>—</td><td class="ados-col" data-i18n="comp.r10_ados">Cron-based dep updates, lint, security scans</td></tr>
+          <tr><td data-i18n="comp.r11">Private registry auth</td><td>—</td><td class="ados-col" data-i18n="comp.r11_ados">npm / pip / Maven auto-injection</td></tr>
+          <tr><td data-i18n="comp.r12">Observability</td><td>—</td><td class="ados-col" data-i18n="comp.r12_ados">Prometheus metrics + Grafana dashboards</td></tr>
         </tbody>
       </table>
     </div>
@@ -1132,6 +1135,23 @@
         <h3 data-i18n="feat.f9_title">Multi-VCS Support</h3>
         <p data-i18n="feat.f9_desc">Supports GitHub, GitLab, and Bitbucket. No VCS lock-in — adopt with your existing workflow.</p>
         <span class="feature-tag" data-i18n="feat.tag_not_copilot">Not in Copilot</span>
+      </div>
+      <div class="feature reveal reveal-delay-1">
+        <div class="feature-icon">⏰</div>
+        <h3 data-i18n="feat.f10_title">Scheduled Tasks</h3>
+        <p data-i18n="feat.f10_desc">Cron-based automation for dependency updates, lint fixes, and security scans. Runs on your schedule, no manual intervention.</p>
+        <span class="feature-tag" data-i18n="feat.tag_not_copilot">Not in Copilot</span>
+      </div>
+      <div class="feature reveal reveal-delay-2">
+        <div class="feature-icon">📦</div>
+        <h3 data-i18n="feat.f11_title">Private Registry Support</h3>
+        <p data-i18n="feat.f11_desc">Auto-injects auth for npm, pip, and Maven private registries. Credentials are securely removed after each run.</p>
+        <span class="feature-tag" data-i18n="feat.tag_secure">Secure</span>
+      </div>
+      <div class="feature reveal reveal-delay-3">
+        <div class="feature-icon">📈</div>
+        <h3 data-i18n="feat.f12_title">Observability</h3>
+        <p data-i18n="feat.f12_desc">Prometheus metrics endpoint with Grafana-ready dashboards. Track job success rates, agent performance, and API rate limits.</p>
       </div>
     </div>
   </section>
@@ -1384,6 +1404,12 @@
       'comp.r9': '複数リポジトリ横断',
       'comp.r9_cop': '1 リポジトリ単位',
       'comp.r9_ados': '組織全体を一元管理',
+      'comp.r10': 'スケジュール定期実行',
+      'comp.r10_ados': 'cron 式で依存更新・lint・セキュリティスキャン',
+      'comp.r11': 'プライベートレジストリ認証',
+      'comp.r11_ados': 'npm / pip / Maven を自動注入',
+      'comp.r12': 'オブザーバビリティ',
+      'comp.r12_ados': 'Prometheus メトリクス + Grafana ダッシュボード',
       'comp.note': '💡 ADOS は Copilot を AI エージェントの 1 つとして内蔵しています。<br>競合ではなく、<strong>Copilot を最大限活用するためのプラットフォーム</strong>です。',
       // How It Works
       'how.title': '3 ステップで自動化',
@@ -1430,6 +1456,12 @@
       'feat.tag_autopilot': '自律改善',
       'feat.f9_title': 'マルチ VCS 対応',
       'feat.f9_desc': 'GitHub、GitLab、Bitbucket に対応。VCS にロックされず、既存のワークフローのまま導入。',
+      'feat.f10_title': 'スケジュール実行',
+      'feat.f10_desc': 'cron 式で依存更新・lint 修正・セキュリティスキャンを定期実行。手動介入不要で自動メンテナンス。',
+      'feat.f11_title': 'プライベートレジストリ対応',
+      'feat.f11_desc': 'npm、pip、Maven のプライベートレジストリに認証情報を自動注入。実行後は安全に自動削除。',
+      'feat.f12_title': 'オブザーバビリティ',
+      'feat.f12_desc': 'Prometheus メトリクスエンドポイントと Grafana 対応ダッシュボード。ジョブ成功率・エージェント性能・API レートリミットを追跡。',
       // Metrics
       'metrics.title': '導入効果',
       'metrics.subtitle': 'ADOS が開発チームにもたらすインパクト',
@@ -1555,6 +1587,12 @@
       'comp.r9': 'Кросс-репозиторий',
       'comp.r9_cop': 'По одному репозиторию',
       'comp.r9_ados': 'Управление всей организацией',
+      'comp.r10': 'Плановое обслуживание',
+      'comp.r10_ados': 'Cron: обновление зависимостей, lint, безопасность',
+      'comp.r11': 'Авторизация приватных реестров',
+      'comp.r11_ados': 'npm / pip / Maven авто-инъекция',
+      'comp.r12': 'Наблюдаемость',
+      'comp.r12_ados': 'Метрики Prometheus + дашборды Grafana',
       'comp.note': '💡 ADOS включает Copilot как один из своих ИИ-агентов.<br>Не конкурент — <strong>платформа для максимального использования Copilot</strong>.',
       // How It Works
       'how.title': 'Автоматизация за 3 шага',
@@ -1601,6 +1639,12 @@
       'feat.tag_autopilot': 'Автономно',
       'feat.f9_title': 'Мульти-VCS',
       'feat.f9_desc': 'Поддержка GitHub, GitLab и Bitbucket. Никакой привязки к VCS — внедряйте с вашим текущим workflow.',
+      'feat.f10_title': 'Запланированные задачи',
+      'feat.f10_desc': 'Автоматизация на основе cron: обновление зависимостей, исправление lint, сканирование безопасности. Без ручного вмешательства.',
+      'feat.f11_title': 'Приватные реестры',
+      'feat.f11_desc': 'Автоматическая инъекция авторизации для npm, pip и Maven приватных реестров. Учётные данные безопасно удаляются после запуска.',
+      'feat.f12_title': 'Наблюдаемость',
+      'feat.f12_desc': 'Эндпоинт метрик Prometheus с дашбордами для Grafana. Отслеживание success rate, производительности агентов и лимитов API.',
       // Metrics
       'metrics.title': 'Результаты',
       'metrics.subtitle': 'Влияние ADOS на вашу команду разработки',
